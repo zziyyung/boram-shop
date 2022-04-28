@@ -247,3 +247,23 @@ class NovelStory(models.Model):
     class Meta:
         managed = False
         db_table = 'novel_story'
+
+
+class Signup(models.Model):
+    userid = models.CharField(max_length=50)
+    userpw = models.CharField(max_length=1000)
+    username = models.CharField(max_length=50)
+    userbirthday = models.CharField(max_length=50, blank=True, null=True)
+    usergender = models.CharField(max_length=50, blank=True, null=True)
+    useremail = models.CharField(max_length=200)
+    userphone = models.CharField(max_length=50)
+    role = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str({'userID': self.userid, 'userPW': self.userpw, 'userName': self.username,
+                    'userGender': self.usergender, 'userEmail': self.useremail,
+                    'userbirthDay': self.userbirthday, 'userPhone': self.userphone,'role':self.role})
+
+    class Meta:
+        managed = False
+        db_table = 'signup'

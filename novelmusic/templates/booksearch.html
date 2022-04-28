@@ -1,12 +1,127 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>보람3조 | 소설...감성을 담댜</title>
+    <link rel="stylesheet" href="{% static 'css/booksearch.css' %}" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    
+    <div id="head_left">
+        <img src="" id="logo">
+    </div>
+    <div id="head_right">
+        {% if not request.session.username %}
+            <a href="/signup"><span> 회원가입 </span></a>
+            <a href="/login"><span> 로그인 </span></a>
+        {% else %}
+            {% if request.session.username == userinfo.userID %}
+                <a id="userid">{ username }님 환영합니다</a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <div id="elk">
+        <text></text>
+    </div>
+    <div id="ImageForUser">
+        <div id="mynews">
+            <img src="{% static 'images/bell.png' %}" >
+        </div>
+        <div id="mybacket">
+            <img src="{% static 'images/cart.png' %}" >
+        </div>
+        <div id="mypage">
+            <img src="{% static 'images/customer.png' %}" >
+        </div>
+    </div>
+    <div id="bookplace">
+        <div id="bookcover">
+            <img src="{{ CBTcover }}">
+        </div>
+        <div id="bookpiece">
+            <img src="">
+        </div>
+        <div id="bookcategory">
+            <text id="category"></text>
+        </div>
+        <div id="booktitle">
+            <text id="title">{{ CBTtitle }}</text>
+        </div>
+        <div id="booksmallwrite">
+            <text id="smallwrite"></text>
+        </div>
+        <div id="bookwriteperson">
+            <a id="bookwritepersonwhere">저자</a>
+            <text id="whowirte">{{ CBTauthor }}</text>
+        </div>
+        <div id="booksell">
+            <a id="booksellwhere">출판사</a>
+            <text id="seller">{{ CBTpublisher }}</text>
+        </div>
+        <div id="bookprice">
+            <text id="bookpricewhere">가격</text>
+            <text id="buyprice">{{ CBTprice }}</text>
+        </div>
+        <div id="thislike">
+            <img src="" >
+        </div>
+        <div id="inbacket">
+            <img src="" >
+        </div>
+        <div id="forgift">
+            <img src="" >
+        </div>
+        <div id="buythis">
+            <div id="callcasher"></text>
+        </div>
+    </div>
+    <div id="songplace">
+        <div id="songlist"></div>
+        <div id="songvideo"></div>
+    </div>
+    <div id="bookplace2">
+        <div id="bookinfo">
+            <a id ="bookinfowhere">작품 소개</a></br>
+            <text id="bookinfostory">{{ CBSstory }}</text>
+        </div>
+        <div id="booksellerinfo">
+            <a id = "booksellerinfowhere">출판사 서평</a></br>
+            <text id="sellerinfo"> {{ CBSreview }}</text>
+        </div>
+        <div id="bookreview">
+            <div id="booktotalscore">
+                <text id="boughtscore">구매자 별점</text>
+                <div id="boughttotal"></div>
+            </div>
+            <text id="checkscore">책을 평가해주세요</text>
+            <form>
+                <label for="star1"></label>
+                <label for="star2"></label>
+                <label for="star3"></label>
+                <label for="star4"></label>
+                <label for="star5"></label>
+                <textarea id="bookuserthink"></textarea>
+                <button id="spo">스포일러 포함</button>
+                <button id="usersthink">리뷰 남기기</button>
+            </form>
+        </div>
+    </div>
+    <div id="bookplace3">
+        <text id="bookhelp">이 책과 비슷한 책 추천</text>
+        <div id="recommend1">
+            <img src="" alt="">
+        </div>
+        <div id="recommend2">
+            <img src="" alt="">
+        </div>
+        <div id="recommend3">
+            <img src="" alt="">
+        </div>
+        <div id="recommend4">
+            <img src="" alt="">
+        </div>
+        <div id="recommendlist"></div>
+    </div>
 </body>
 </html>

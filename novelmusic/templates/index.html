@@ -1,10 +1,74 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>보람3조 | 소설...감성을 담댜</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .best list > img{
+            width: 150px;
+            height: 150px;
+            float: left;
+        }
+
+        #NewBookBox{
+            position:relative;
+            width: 750px;
+            height:150px;
+        }
+        #SlotNewBooks{overflow: auto;}
+    </style>
+    <script>
+        $(function(){
+            setInterval(function(){
+                var div = $("#SlotNewBooks");
+                $(".active").first().appendTo(div);
+            },1500);
+        });
+        function findthis(dd){
+            var keyword = dd
+            var form = $('#fromimage')
+            $('#book').val(keyword)
+            form.submit();
+        }
+    </script>
 </head>
 <body>
+    <div id="head_signup">
+        {% if not request.session.username %}
+            <a href="/signup"><span> 회원가입 </span></a>
+            <a href="/login"><span> 로그인 </span></a>
+        {% else %}
+            {% if request.session.username == userinfo.userid %}
+                <a id="username">{{userinfo.userName}}</a>
+                <a href="/logout"><span id="logout"> 로그아웃 </span></a>
+                <a href="/Mypage"><span id="mypage">마이페이지</span></a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <div class="TopLogo">
+        <img src="">
+    </div>
+    <form method="post" action="/booksearch/"  id="fromimage">
+        <div id="NewBookBox">
+            <div id="SlotNewBooks">
+                {% for i,j in newbooks5 %}
+                    <img src="{{ i }}" value="{{ j }}" class="active" id="{{j}}" onclick="findthis('{{j}}')">
+                {% endfor %}
+            </div>
+        </div>
 
-</body>
+        <div class="BestList">
+            {% for i,j in bestbooks10 %}
+                <img src="{{ i }}" value="{{ j }}"  onclick="findthis('{{j}}')">
+            {% endfor %}
+        </div>
+        <input type="text" name="book" id="book" style="display: none;">
+    </form>
+    <span id="DownWrite">
+        <span id="something">기업 소개?</span>
+        <a href="/coustomservice"><span>고객센터</span></a>
+    </span>
 </html>
