@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>보람3조 | 소설...감성을 담댜</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type= text/javascript>
+        $(function(){
+            $("#alert-success").hide();
+            $("#alert-danger").hide();
+
+            $('.pw').keyup(function(){
+                var pwd1 = $('#user_pw').val();
+                var pwd2 = $('#user_pw2').val();
+                if(pwd1 != "" || pwd2 != ""){
+                    if(pwd1 == pwd2){
+                        $("#alert-success").show();
+                        $('#alert-danger').hide();
+                        $("#submit").removeAttr("disabled");
+                    }else{
+                        $("#alert-success").hide();
+                        $('#alert-danger').show();
+                        $("#submit").attr("disabled","disabled");
+                    }
+                }
+            })
+        })
+        $(document).on("keyup", "#user_phone", function(){
+             $(this).val($(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-"))
+        })
+    </script>
+</head>
+<body>
+    <div id="page_head">
+        <div id="head_logo"></div>
+        <div id="head_title">
+            <div id="head_signup">
+                {% if not request.session.username %}
+                    <a href="{% url 'signup' %}"><span> 회원가입 </span></a>
+                    <a href="{% url 'login' %}"><span> 로그인 </span></a>
+                {% else %}
+                    <a href="{% url 'logout' %}"><span id="logout_text"> 로그아웃 </span></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div id="signup_page_body">
+        <div id="signup_body">
+            <form action="{% url 'signup' %}" method="post">{% csrf_token %}
+                <div id="form_text">  회  원  가  입  </div>
+                <div id="form1">
+                    <div id="form_id"> 아 이 디 <input id="user_id" name="userID" placeholder=" 사용할 아이디를 입력하세요."></input></div>
+                    <div id="form_pw"> 비밀번호 <input type="password" id='user_pw' name="userPW1"></input></div>
+                    <div id="form_pw2"> 비밀번호 재확인 <input type="password", id='user_pw2' class="pw"></div>
+                </div>
+                
+                <div id="alert">
+                    <div class="alert alert-success" id="alert-success" style="color: green;">비밀번호가 일치합니다.</div> 
+                    <div class="alert alert-danger" id="alert-danger" style="color: red;">비밀번호가 일치하지 않습니다.</div>
+                </div>
+                
+                <div id="form2">
+                    <div id="form_name">이 름<input type="text" name="userName" id="user_name1"></div>
+                    <div id="form_birthday">생년월일<input type="text" name = 'userbirthDay' id="user_birthday" placeholder="YYYYMMDD"></div>
+                    <div id="form_gender"> 
+                        성 별
+                        <select name="userGender">
+                            <option value="남">남</option>
+                            <option value="여">여</option>
+                        </select></div>
+                    <div id="form_email">이메일<input type="text" id="user_email" name="userEmail" placeholder="leenodam@nodam.com" ></div>
+                    <div id="form_phone">휴대전화<input type="text" id='user_phone' name ='userPhone' placeholder="01012345678"></div>
+
+                </div>
+                <div id="form3">
+                    <div >개인정보동의서 만들기읾ㅇㄹ멂람ㄴ로</div>
+                </div>
+                <div id="form4">
+                    <div id="form_submit"><input type="submit" value="가입하기"></div>
+                    <div id="form_cancle"><input type="button" value="뒤로가기" onclick="location.href='../'" ></div>
+                </div>
+            </form>
+        </div>
+    </div> 
+    <div id="page_foot">
+        <div id="foot_logo"></div> 
+        <div id="companyinfo">
+            <p id="company_address">(주) 멀캠에서 코딩하조 | 서울특별시 강남구 언주로 508 14층(역삼동, 서울상록빌딩)</p>
+            <p id="copyright">Copyright by Multicoding Co., Ltd. All rights reserved.</p>
+        </div>
+    </div>
+       
+</body>
+</html>

@@ -91,13 +91,14 @@ WSGI_APPLICATION = 'novelmusic.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'novelmusic',  # 데이터베이스의 이름
         'USER': 'root',
         'PASSWORD': '1234',
-        'HOST': '',  # aws mysql 외부 연동 (외부IP) 변경 필 !
+        'HOST': '34.64.189.76',  # aws mysql 외부 연동 (외부IP) 변경 필 !
         'PORT': '3306'
     }
 }
