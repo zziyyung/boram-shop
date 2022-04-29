@@ -2,11 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Title</title>
+    <style type="text/css">
+        header{
+            width: 100%;
+            background-color: rgba(31, 158, 255, 1);
+        }
+        main{
+            width: 100%;
+        }
+        .topdiv{
+            padding: 40px 24px;
+            background: #f7f7f7;
+        }
+        .top{
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .bottomdiv{
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .bottom{
+            box-sizing: border-box;
+            padding: 32px 0 0;
+            background: #fff;
+        }
+        .title{
+            padding: 0 24px;
+            margin-bottom: 12px;
+        }
+        ul {
+            display: block;
+            list-style: none;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+            padding-inline-start: 40px;
+        }
+        .question{
+            cursor: pointer;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .answer{
+            background: #f7f7f7;
+            display: none;
+        }
+        .num{
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 22px;
+            text-align: center;
+            color: #c1c1c1;
+            padding-right: 12px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .content{
+            padding: 0 34px 0 24px;
+            font-size: 16px;
+            line-height: 22px;
+            color: #242424;
+        }
+        footer{
+            border-top: 1px solid #e6e8eb;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+            background: #2f3142;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function(){
+            $(".question").click(function(){
+                $(this).next().slideDown()
+                $(this).parent().siblings().find("div.answer").slideUp()
+            })
+        })
+    </script>
 </head>
 <body>
-    
+    <header class="header">
+        <h4>로고 상단바</h4>
+    </header>
+
+    <main role="main">  <!-- 문서의 주요한 내용을 담는 태그 -->
+        <div class="topdiv">
+            <div class="top">
+                <h2>(밀리의 서재 참고) 무엇을 도와드릴까요?</h2>
+                <p>환불은 100% 확실하고,
+                    <br>
+                    문의는 신속하게 답변드리겠습니다.
+                </p>
+                <img>
+            </div>
+        </div>
+        <div class="bottomdiv">
+            <div class="bottom">
+                <h3 class="title">공지사항</h3>
+                <ul>
+                    <li>
+                        <div class="question" id="q_sub">
+                            <em class="num">1</em>
+                            <p class="content">[공지] ~~는 이런 서비스입니다</p>
+                        </div>
+                        <div class="answer" id="a_sub">
+                            <p>소설을 잘 나타낼 수 있는 음악을 함께 보여줍니다</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question" id="q_sub">
+                            <em class="num">2</em>
+                            <p class="content">[공지] 결제 서비스 준비중 안내</p>
+                        </div>
+                        <div class="answer" id="a_sub">
+                            <p>현재는 준비중입니다.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question" id="q_sub">
+                            <em class="num">3</em>
+                            <p class="content">[공지] 회원 가입 서비스 장애 안내</p>
+                        </div>
+                        <div class="answer" id="a_sub">
+                            <p>현재는 준비중입니다.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="bottom">
+                <h3 class="title">자주 묻는 질문</h3>
+                <ul>
+                    <li>
+                        <div class="question">
+                            <em class="num">1</em>
+                            <p class="content">어플에서도 이용할 수 있나요?</p>
+                        </div>
+                        <div class="answer">
+                            <p>현재는 준비중입니다.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <em class="num">2</em>
+                            <p class="content">도서 카테고리별 분류는 없나요?</p>
+                        </div>
+                        <div class="answer">
+                            <p>현재는 준비중입니다.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="question">
+                            <em class="num">3</em>
+                            <p class="content">[제휴] ~~는 어떻게 되나요?</p>
+                        </div>
+                        <div class="answer">
+                            <p>현재는 준비중입니다.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <h4>저작권</h4>
+    </footer>
+
 </body>
 </html>

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import django
 from django.utils.encoding import force_str
 django.utils.encoding.force_text = force_str
+import datetime
 
 from pathlib import Path
 
@@ -27,31 +28,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p=++wdaovk2%#s@mefa4(s-rp_zb=-o9hu2)@-*hzijn%^rri*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True   # aws에서 설정 변경 ?
+DEBUG = False   # aws에서 설정 변경 ?
 
-ALLOWED_HOSTS = []   # 로컬은 아무것도 없고 aws 서버 사용하려면 ip주소 넣기
+ALLOWED_HOSTS = ['*']   # 로컬은 아무것도 없고 aws 서버 사용하려면 ip주소 넣기
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'novelmusic',
+    'django_elasticsearch_dsl',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'novelmusic',
-    'rest_framework',    # 모듈 없으면 오류 / 다운받기 pip install djangorestframework==3.13.1
-    'django_elasticsearch_dsl',   # 모듈 없으면 오류  / 다운받기 pip install django-elasticsearch-dsl==7.1.4
+    'rest_framework',    # 모듈 없으면 오류 / 다운받기 pip install djangorestframework==3.13.1   # 모듈 없으면 오류  / 다운받기 pip install django-elasticsearch-dsl==7.1.4
 ]
 # 추가로 다운받아야 할 모듈 ( 위에 2개랑 합쳐서 총4개 (버전 잘 맞추기))
-# pip install elasitcsearch==7.11.0b1
+# pip install elasticsearch==7.11.0b1
 # pip install elasticsearch_dsl==7.3.0
-
+# pip install python-logstash
 ELASTICSEARCH_DSL = {
     'default': {
-        'host': '',  # aws 서버 ip로 변경
+        'host': '34.64.189.76:9200',  # aws 서버 ip로 변경
         'user': 'elastic',
         'password': 'votmdnjem',
     },
@@ -104,6 +105,7 @@ DATABASES = {
 }
 
 
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -145,3 +147,106 @@ STATICFILES_DIRS = [BASE_DIR/'static']
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# 유튜브 뮤직줄떄 안되서 써본거용
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL =False
+CORS_ORIGIN_WHITELIST = ['localhost','127.0.0.1']
+
+# logstash 연결 1
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False, # 기존의 루트가 아닌 로거를 비활성화할지 여부.
+    'handlers': {                        # handlers : 로그 레코드로 무슨 작업을 할 것인지 정의
+        'logstash': {
+            'level': 'DEBUG',
+            'class': 'logstash.TCPLogstashHandler',
+            'host': '34.64.189.76',
+            'port': 9900,  # Default value: 5959
+            'version': 1,  # version of logstash event schema . default value:0
+            'message_type': 'django',  #' type' field in logstash message. default value : 'logstash'
+            'fqdn': False , # fully qualified domain name . default value : false #
+            'tags': ['django.request'], # list of tags . default : None
+        },
+    },
+    'loggers': {                        # loggers : 처리해야 할 로그 레코드를 어떤 handler로 전달할지 정의
+        'django.requests':{
+            'handlers':['logstash'],    # 로그 레코드를 logstash handler로 전달
+            'level': 'DEBUG',
+            #'propagate': True,
+        },
+        'django.server':{
+            'handlers':['logstash'],    # 로그 레코드를 logstash handler로 전달
+            'level': 'DEBUG',
+            #'propagate': True,
+        },
+    },
+}
+
+
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'filters': {
+#         'require_debug_false': {
+#             '()': 'django.utils.log.RequireDebugFalse',
+#         },
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
+#         },
+#     },
+#     'formatters': {
+#         'django.server': {
+#             '()': 'django.utils.log.ServerFormatter',
+#             'format': '[{server_time}] {message}',
+#             'style': '{',
+#         },
+#         'standard': {
+#             'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'INFO',
+#             'filters': ['require_debug_true'],
+#             'class': 'logging.StreamHandler',
+#         },
+#         'django.server': {
+#             'level': 'INFO',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'django.server',
+#         },
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'filters': ['require_debug_false'],
+#             'class': 'django.utils.log.AdminEmailHandler'
+#         },
+#         'file': {
+#             'level': 'INFO',
+#             'encoding': 'utf-8',
+#             'filters': ['require_debug_false'],
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': BASE_DIR / 'logs/novelmusic.log',
+#             'maxBytes': 1024*1024*5,  # 5 MB
+#             'backupCount': 5,
+#             'formatter': 'standard',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console', 'mail_admins'],
+#             'level': 'INFO',
+#         },
+#         'django.server': {
+#             'handlers': ['django.server'],
+#             'level': 'INFO',
+#             'propagate': False,
+#         },
+#         'my': {
+#             'handlers': ['console'],
+#             'level': 'INFO',
+#         },
+#     }
+# }

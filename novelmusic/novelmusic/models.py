@@ -138,6 +138,20 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class Likes(models.Model):
+    userid = models.CharField(max_length=50)
+    novel_image = models.TextField(blank=True, null=True)
+    novel_title = models.TextField(blank=True, null=True)
+    novel_author = models.TextField(blank=True, null=True)
+    song_image = models.TextField(blank=True, null=True)
+    song_title = models.TextField(blank=True, null=True)
+    song_singer = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'likes'
+
+
 class Music(models.Model):
     year = models.TextField(blank=True, null=True)
     songid = models.TextField(blank=True, null=True)
@@ -260,9 +274,9 @@ class Signup(models.Model):
     role = models.CharField(max_length=50)
 
     def __str__(self):
-        return str({'userID': self.userid, 'userPW': self.userpw, 'userName': self.username,
-                    'userGender': self.usergender, 'userEmail': self.useremail,
-                    'userbirthDay': self.userbirthday, 'userPhone': self.userphone,'role':self.role})
+        return str({'userid': self.userid, 'userpw': self.userpw, 'username':self.username,
+                    'usergender':self.usergender, 'useremail':self.useremail,
+                    'userbirthday':self.userbirthday,'userphone':self.userphone, 'role':self.role})
 
     class Meta:
         managed = False

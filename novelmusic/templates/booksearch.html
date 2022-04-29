@@ -3,9 +3,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>보람3조 | 소설...감성을 담댜</title>
-    <link rel="stylesheet" href="{% static 'css/booksearch.css' %}" type="text/css">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function playmusic(dd){
+            var link = dd
+            $('#playvideo').attr('src',link);
+        }
+
+    </script>
 </head>
 <body>
     <div id="head_left">
@@ -16,8 +24,8 @@
             <a href="/signup"><span> 회원가입 </span></a>
             <a href="/login"><span> 로그인 </span></a>
         {% else %}
-            {% if request.session.username == userinfo.userID %}
-                <a id="userid">{ username }님 환영합니다</a>
+            {% if request.session.username == userinfo.userid %}
+                <a id="userid">{{ userinfo.username }}님 환영합니다</a>
             {% endif %}
         {% endif %}
     </div>
@@ -25,14 +33,8 @@
         <text></text>
     </div>
     <div id="ImageForUser">
-        <div id="mynews">
-            <img src="{% static 'images/bell.png' %}" >
-        </div>
-        <div id="mybacket">
-            <img src="{% static 'images/cart.png' %}" >
-        </div>
         <div id="mypage">
-            <img src="{% static 'images/customer.png' %}" >
+            <a href="{% url 'mypage' %}">마이페이지</a>
         </div>
     </div>
     <div id="bookplace">
@@ -63,9 +65,17 @@
             <text id="bookpricewhere">가격</text>
             <text id="buyprice">{{ CBTprice }}</text>
         </div>
+        <!-- 보류 thislike -->
         <div id="thislike">
-            <img src="" >
+            <div id="this_like"><button type="submit" id="like" onclick="{% url 'likes' %}">좋아요</button></div>
+            <script>
+                function likes() {
+                    {% url 'likes' %}
+                }
+            </script>
         </div>
+        <!-- 보류 thislike -->
+
         <div id="inbacket">
             <img src="" >
         </div>
@@ -79,6 +89,17 @@
     <div id="songplace">
         <div id="songlist"></div>
         <div id="songvideo"></div>
+    </div>
+    <div id="singplace">
+        <div id="singlist">
+            {% for i,j in playlist %}
+                <div onclick="playmusic('{{ j }}')">{{ i }}</div>
+            {% endfor %}
+        </div>
+        <div id="video">
+            <iframe id="playvideo" autoplay="1" controls loop >저작권문제
+            </iframe>
+        </div>
     </div>
     <div id="bookplace2">
         <div id="bookinfo">
@@ -102,7 +123,6 @@
                 <label for="star4"></label>
                 <label for="star5"></label>
                 <textarea id="bookuserthink"></textarea>
-                <button id="spo">스포일러 포함</button>
                 <button id="usersthink">리뷰 남기기</button>
             </form>
         </div>

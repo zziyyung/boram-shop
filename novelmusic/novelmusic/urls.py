@@ -21,10 +21,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index,name='index'),
     path('booksearch/',views.booksearch,name='booksearch'),
-    path('customer/',views.customer),
+    path('customer/',views.customer,name='customer'),
     path('signup/',views.signup,name='signup'),
     path('login/',views.login,name='login'),
-    path('mypage/',views.mypage),
-    path('logout/',views.logout,name='logout')
+    path('mypage/',views.mypage,name='mypage'),
+    path('logout/',views.logout,name='logout'),
+    path('change/', views.change, name='change'),
+    path('changeform/', views.change_form,name='change_form'),
+    path('likes/', views.likes, name='likes'),
 ]
 

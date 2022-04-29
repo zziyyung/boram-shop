@@ -1,12 +1,71 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>보람3조 | 소설...감성을 담댜</title>
-    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Change</title>
 
+    <style>
+        h1 {
+            color: grey;
+            border-bottom: 5px solid black;
+            background-color: lightgreen;
+        }
+        .bar {
+            border: 1px solid black;
+            overflow: hidden;
+            padding: 10px;
+        }
+        .id {
+            font-size: 30px;
+            font-style: bold;
+            border: 1px solid black;
+            float: left;
+        }
+
+        .option {
+            float: right;
+            border: 1px solid black;
+        }
+
+        #preference {
+            border: 1px solid black;
+            color: red;
+            float: left;
+            margin: 5px;
+        }
+
+        #change {
+            border: 1px solid black;
+            color: blue;
+            float: left;
+            margin: 5px;
+        }
+
+        .preference {
+            border: 1px solid black;
+            margin-top: 5px;
+        }
+
+        #mychoice {
+            border: 1px solid black;
+            margin: 5px;
+        }
+
+        #mypreferece {
+            border: 1px solid black;
+            margin: 5px;
+        }
+
+        .change {
+            border: 1px solid black;
+            margin: 5px;
+        }
+
+        .container {
+            border: 1px solid black;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type= text/javascript>
         $(function(){
             $("#alert-success").hide();
@@ -33,6 +92,8 @@
         })
     </script>
 </head>
+
+<body>
 <body>
     <div id="page_head">
         <div id="head_logo"></div>
@@ -47,25 +108,25 @@
             </div>
         </div>
     </div>
-    <div id="signup_page_body">
-        <div id="signup_body">
-            <form action="{% url 'signup' %}" method="post">{% csrf_token %}
-                <div id="form_text">  회  원  가  입  </div>
+    <div id="change_page_body">
+        <div id="change_body">
+            <form action="/changeform/" method="post">{% csrf_token %}
+                <div id="form_text">{{userinfo.username}}님의 회원정보 수정  </div>
                 <div id="form1">
-                    <div id="form_id"> 아 이 디 <input id="user_id" name="userID" placeholder=" 사용할 아이디를 입력하세요."></input></div>
-                    <div id="form_pw"> 비밀번호 <input type="password" id='user_pw' name="userPW1"></input></div>
+                    <div id="form_id"> 아 이 디 <input id="user_id" name="userID" placeholder=" 사용할 아이디를 입력하세요."></div>
+                    <div id="form_pw"> 비밀번호 <input type="password" id='user_pw' name="userPW1"></div>
                     <div id="form_pw2"> 비밀번호 재확인 <input type="password", id='user_pw2' class="pw"></div>
                 </div>
-                
+
                 <div id="alert">
-                    <div class="alert alert-success" id="alert-success" style="color: green;">비밀번호가 일치합니다.</div> 
+                    <div class="alert alert-success" id="alert-success" style="color: green;">비밀번호가 일치합니다.</div>
                     <div class="alert alert-danger" id="alert-danger" style="color: red;">비밀번호가 일치하지 않습니다.</div>
                 </div>
-                
+
                 <div id="form2">
                     <div id="form_name">이 름<input type="text" name="userName" id="user_name1"></div>
                     <div id="form_birthday">생년월일<input type="text" name = 'userbirthDay' id="user_birthday" placeholder="YYYYMMDD"></div>
-                    <div id="form_gender"> 
+                    <div id="form_gender">
                         성 별
                         <select name="userGender">
                             <option value="남">남</option>
@@ -75,23 +136,12 @@
                     <div id="form_phone">휴대전화<input type="text" id='user_phone' name ='userPhone' placeholder="01012345678"></div>
 
                 </div>
-                <div id="form3">
-                    <div >개인정보동의서 구현예정</div>
-                </div>
                 <div id="form4">
-                    <div id="form_submit"><input type="submit" value="가입하기"></div>
+                    <div id="form_submit"><input type="submit" value="수정하기"></div>
                     <div id="form_cancle"><input type="button" value="뒤로가기" onclick="location.href='../'" ></div>
                 </div>
             </form>
         </div>
-    </div> 
-    <div id="page_foot">
-        <div id="foot_logo"></div> 
-        <div id="companyinfo">
-            <p id="company_address">(주) 멀캠에서 코딩하조 | 서울특별시 강남구 언주로 508 14층(역삼동, 서울상록빌딩)</p>
-            <p id="copyright">Copyright by Multicoding Co., Ltd. All rights reserved.</p>
-        </div>
     </div>
-       
 </body>
 </html>
