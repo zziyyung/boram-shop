@@ -44,7 +44,7 @@
             {% if request.session.username == userinfo.userid %}
                 <a id="username">{{userinfo.userName}}</a>
                 <a href="/logout"><span id="logout"> 로그아웃 </span></a>
-                <a href="/Mypage"><span id="mypage">마이페이지</span></a>
+                <a href="{% url 'mypage' %}"><span id="mypage">마이페이지</span></a>
             {% endif %}
         {% endif %}
     </div>
@@ -69,6 +69,6 @@
     </form>
     <span id="DownWrite">
         <span id="something">기업 소개?</span>
-        <a href="/coustomservice"><span>고객센터</span></a>
+        <a href="{% url 'customer' %}"><span>고객센터</span></a>
     </span>
 </html>
