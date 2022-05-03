@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import django
 from django.utils.encoding import force_str
 django.utils.encoding.force_text = force_str
-import datetime
+
 
 from pathlib import Path
 
@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p=++wdaovk2%#s@mefa4(s-rp_zb=-o9hu2)@-*hzijn%^rri*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False   # aws에서 설정 변경 ?
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']   # 로컬은 아무것도 없고 aws 서버 사용하려면 ip주소 넣기
 
@@ -52,9 +52,7 @@ INSTALLED_APPS = [
 # pip install python-logstash
 ELASTICSEARCH_DSL = {
     'default': {
-        'host': '34.64.189.76:9200',  # aws 서버 ip로 변경
-        'user': 'elastic',
-        'password': 'votmdnjem',
+        'host': '34.64.181.43:9200'  # aws 서버 ip로 변경
     },
 }
 
@@ -99,7 +97,7 @@ DATABASES = {
         'NAME': 'novelmusic',  # 데이터베이스의 이름
         'USER': 'root',
         'PASSWORD': '1234',
-        'HOST': '34.64.189.76',  # aws mysql 외부 연동 (외부IP) 변경 필 !
+        'HOST': '34.64.181.43',  # aws mysql 외부 연동 (외부IP) 변경 필 !
         'PORT': '3306'
     }
 }
@@ -134,14 +132,18 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+# 리뷰 날짜 업로드용
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+
+
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR/'static']
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -162,7 +164,7 @@ LOGGING = {
         'logstash': {
             'level': 'DEBUG',
             'class': 'logstash.TCPLogstashHandler',
-            'host': '34.64.189.76',
+            'host': '34.64.181.43',
             'port': 9900,  # Default value: 5959
             'version': 1,  # version of logstash event schema . default value:0
             'message_type': 'django',  #' type' field in logstash message. default value : 'logstash'
@@ -185,7 +187,7 @@ LOGGING = {
 }
 
 
-
+# 장고 로깅 파일용
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,

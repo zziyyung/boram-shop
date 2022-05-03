@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <title>보람3조 | 소설...감성을 담댜</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--자동 완성 제이쿼리 함수-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
         .best list > img{
             width: 150px;
@@ -34,8 +37,60 @@
             form.submit();
         }
     </script>
+    <script>
+        //cors 보안문제 elasticsearch.yml 설정으로 일단 해결은 했으나 배포할 때 보안설정해야함
+
+        $(function(){
+            $('#search').autocomplete({
+                //alert('클릭했당')
+                source : function(request,response){
+                    $.ajax({
+                        url:"http://34.64.181.43:9200/novelnori/_search", //노리 분석 완료 인덱스
+                        method:"get",
+                        async:true,
+                        dataType:'json',
+                        data:{'q':"title:" + $('#search').val()}, // title로만 검색
+                        success:function(data){
+                            var message = data.hits.hits
+                            console.log(message)
+                            var resultlist = new Array()
+                            $.each(message, function(index, item){
+                                result = item['_source']['title']
+                                resultlist.push(result)
+                                console.log(result)
+                                //console.log(resultlist)
+                            })
+                            response(
+                                $.map(resultlist,function(item){
+                                    return{
+                                        label: item
+                                    }
+                                })
+                            )
+                        },
+                        error:function(request,error){
+                            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
+                        }
+                    })
+                },
+                minLength:1,
+                autoFocus:false,
+                select:function(evt,ui){
+                    console.log('wow')
+                },
+                focus:function(evt,ui){
+                    return false
+                },
+                close:function(evt){
+                }
+            })
+        })
+    </script>
 </head>
 <body>
+    <div class="TopLogo">
+        <img src="{% static 'images/b3_logo.png' %}" width=150px height=150px>
+    </div>
     <div id="head_signup">
         {% if not request.session.username %}
             <a href="/signup"><span> 회원가입 </span></a>
@@ -44,14 +99,18 @@
             {% if request.session.username == userinfo.userid %}
                 <a id="username">{{userinfo.userName}}</a>
                 <a href="/logout"><span id="logout"> 로그아웃 </span></a>
-                <a href="{% url 'mypage' %}"><span id="mypage">마이페이지</span></a>
+                <a href="{% url 'mypage' %}">
+                    <img src="{% static 'images/customer.png' %}" width=50px height=50px>
+                </a>
             {% endif %}
         {% endif %}
     </div>
-    <div class="TopLogo">
-        <img src="">
-    </div>
+
     <form method="post" action="/booksearch/"  id="fromimage">
+        <!--검색 정확히 입력안하고 엔터치면 오류-->
+        <input type="text" id="search" name="booktitle" placeholder="Search..." required>
+        <input type="submit" value="검색">
+        <!--신간리스트-->
         <div id="NewBookBox">
             <div id="SlotNewBooks">
                 {% for i,j in newbooks5 %}
@@ -59,7 +118,7 @@
                 {% endfor %}
             </div>
         </div>
-
+        <!--베스트셀러-->
         <div class="BestList">
             {% for i,j in bestbooks10 %}
                 <img src="{{ i }}" value="{{ j }}"  onclick="findthis('{{j}}')">

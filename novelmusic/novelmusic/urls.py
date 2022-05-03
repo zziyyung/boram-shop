@@ -29,5 +29,7 @@ urlpatterns = [
     path('change/', views.change, name='change'),
     path('changeform/', views.change_form,name='change_form'),
     path('likes/', views.likes, name='likes'),
+    path('unlikes/', views.unlikes, name='unlikes'),
+    path('insertreview/',views.insertreview,name='insertreview'),
 ]
 
