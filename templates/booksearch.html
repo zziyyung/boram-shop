@@ -1,0 +1,317 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>보람3조 | 소설...감성을 담댜</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/booksearch.css' %}">
+    <!-- 노래 재생 -->
+    <script>
+        // function playmusic(dd){
+        //     var link = dd
+        //     $('#playvideo').attr('src',link);
+        // }
+    </script>
+
+    <!-- 리뷰 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            //별점선택 이벤트 리스너
+            document.querySelector('.rating').addEventListener('click',function(e){
+                let elem = e.target;
+                if(elem.classList.contains('rate_radio')){
+                    rating.setRate(parseInt(elem.value));
+                }
+            })
+
+            //상품평 작성 글자수 초과 체크 이벤트 리스너
+            document.querySelector('.review_textarea').addEventListener('keydown',function(){
+                //리뷰 400자 초과 안되게 자동 자름
+                let review = document.querySelector('.review_textarea');
+                let lengthCheckEx = /^.{400,}$/;
+                if(lengthCheckEx.test(review.value)){
+                    //400자 초과 컷
+                    review.value = review.value.substr(0,400);
+                }
+            });
+        });
+        function Rating(){};
+        Rating.prototype.rate = 0;
+        Rating.prototype.setRate = function(newrate){
+            //별점 마킹 - 클릭한 별 이하 모든 별 체크 처리
+            this.rate = newrate;
+            document.querySelector('.ratefill').style.width = parseInt(newrate * 20) + 'px';
+            let items = document.querySelectorAll('.rate_radio');
+            items.forEach(function(item, idx){
+                if(idx < newrate){
+                    item.checked = true;
+                }else{
+                    item.checked = false;
+                }
+            });
+        }
+        let rating = new Rating();//별점 인스턴스 생성
+
+        // 좋아요/싫어요
+        $(function() {
+            $("#thislike").click(function() {
+                $.ajax({
+                url: '/likes/',
+                type:"POST",
+                data : {'booktitle': '{{ CBTtitle }}', 'userid' : '{{ userinfo.userid }}' ,'bookimage':"{{ CBTcover }}",'bookprice':'{{ CBTprice }}' },
+                dataType : "json",
+                success: function(msg) {
+                    var obj = JSON.parse(msg)
+                    var messeage = obj.result
+                    alert(messeage)
+                    }
+                })
+            });
+        });
+        $(function(){
+            $("#unthislike").click(function() {
+                $.ajax({
+                    url: '/unlikes/',
+                    type:"POST",
+                    data : {'delbooktitle': '{{ CBTtitle }}', 'deluserid' : '{{ userinfo.userid }}','delbookimage':"{{ CBTcover }}",'delbookprice':'{{ CBTprice }}' },
+                    dataType : "json",
+                    success: function(msg) {
+                        var obj = JSON.parse(msg)
+                        var messeage = obj.result2
+                        alert(messeage)
+                    }
+                })
+            });
+        });
+    </script>
+
+    <!-- 구매하기 -->
+    <script>
+        $(function(){
+            $("#purchase").click(function(){
+                alert("구매서비스는 현재 준비중입니다")
+            })
+        })
+    </script>
+
+    <!-- 노래평가 -->
+    <script>
+        $(function() {
+            $("#sendmatchreview").on("click", function(){
+                var formdata = $('#matchform').serialize()
+                $.ajax({
+                    type: "POST",
+                    url: '/booksearch/insertmatchreview/',
+                    data: formdata,
+                    success: function(msg) {
+                        var obj = JSON.parse(msg)
+                        var messeage = obj.result
+                        alert(messeage)
+                        $('#side').attr('style','display:none')
+                    },
+                    error:function(request, status, error){
+
+                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+                    }
+                });
+            });
+       });
+    </script>
+</head>
+<body>
+    <div id="head_left">
+        <img src="" id="logo">
+    </div>
+    <div id="head_right">
+        {% if not request.session.username %}
+            <a id="signup" href="/signup"><span> 회원가입 </span></a>
+            <a href="/login"><span> 로그인 </span></a>
+        {% else %}
+            {% if request.session.username == userinfo.userid %}
+                <a id="userid">{{ userinfo.username }}님 환영합니다</a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <div id="elk">
+        <text></text>
+    </div>
+    <div id="ImageForUser">
+        <div id="mypage">
+            <a href="{% url 'mypage' %}">마이페이지</a>
+        </div>
+    </div>
+    <div id="bookplace">
+        <div id="bookcover">
+            <img src="{{ CBTcover }}">
+        </div>
+        <div id="booktitle">
+            <text id="title">{{ CBTtitle }}</text>
+        </div>
+        <div id="bookwriteperson">
+            <a id="bookwritepersonwhere">저자</a>
+            <text id="whowirte">{{ CBTauthor }}</text>
+        </div>
+        <div id="booksell">
+            <a id="booksellwhere">출판사</a>
+            <text id="seller">{{ CBTpublisher }}</text>
+        </div>
+        <div id="bookprice">
+            <text id="bookpricewhere">가격</text>
+            <text id="buyprice">{{ CBTprice }}</text>
+        </div>
+
+        <!-- 리디북스 보면 좋아요랑 합쳐져있는데 나중에 생각-->
+        <div>
+            <button id="purchase">구매하기</button>
+        </div>
+
+        <!-- 비회원시랑 회원시의 좋아요 연결 다르게 해놓음 jquery에서 if문 쓰려고했는데 실패-->
+        <div id="likepage">
+            {% if not request.session.username %}
+                <a href="{% url 'login' %}"><button>좋아요</button></a>
+                <a href="{% url 'login' %}"><button>싫어요</button></a>
+            {% else %}
+                <button id="thislike">좋아요</button>
+                <button id="unthislike">싫어요</button>
+            {% endif %}
+        </div>
+
+    </div>
+         <!-- 노래 리스트
+    <div id="songplace">
+        <div id="songlist"></div>
+        <div id="songvideo"></div>
+    </div>
+
+    <div id="singplace">
+        <div id="singlist">
+            {% for i,j in playlist %}
+                <div onclick="playmusic('{{ j }}')">{{ i }}</div>
+            {% endfor %}
+        </div>
+        <div id="video">
+            <iframe id="playvideo"  controls; loop; src="{{ musicdefault }}";>저작권문제</iframe>
+        </div>
+    </div>
+        -->
+    <div id="bookplace2">
+        <div id="bookinfo">
+            <a id ="bookinfowhere">작품 소개</a></br>
+            <text id="bookinfostory">{{ CBSstory }}</text>
+        </div>
+        <div id="booksellerinfo">
+            <a id = "booksellerinfowhere">출판사 서평</a></br>
+            <text id="sellerinfo"> {{ CBSreview }}</text>
+        </div>
+
+        <!-- 재영님이 수정중 -->
+        <a>리뷰 게시판</a>
+        <table border="0">
+            <col width="50" />
+            <col width="500" />
+            <col width="100" />
+            <tr>
+                <th>작성자</th>
+                <th>리뷰</th>
+                <th>작성일</th>
+            </tr>
+            {% if not list %}
+            <tr>
+                <th colspan="3">------------작성된 글이 없습니다------------</th>
+            </tr>
+            {% else %}
+                {% for id,review,date in list %}
+                    <tr>
+                        <td>{{ id }}</td>
+                        <td style="text-align:center">{{ review }}</td>
+                        <td>{{ date }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+        <form action="{% url 'insertreview' %}" method="post">
+            <table border="0">
+                <tr>
+                    <th>
+                        <div class="review_rating rating_point">
+                            <input type="hidden" id="foruserid" name="foruserid" value="{{ userinfo.userid }}"/>
+                            <input type="hidden" id="forbookname" name="forbookname" value="{{ CBTtitle }}"/>
+                            <div class="warning_msg">별점을 선택해 주세요.</div>
+                            <div class="rating">
+                                <div class="ratefill"></div>
+                                <!-- [D] 해당 별점이 선택될 때 그 점수 이하의 input엘리먼트에 checked 클래스 추가 -->
+                                <input type="checkbox" name="rating" id="rating1" value="1" class="rate_radio" title="1점">
+                                <label for="rating1"></label>
+                                <input type="checkbox" name="rating" id="rating2" value="2" class="rate_radio" title="2점">
+                                <label for="rating2"></label>
+                                <input type="checkbox" name="rating" id="rating3" value="3" class="rate_radio" title="3점" >
+                                <label for="rating3"></label>
+                                <input type="checkbox" name="rating" id="rating4" value="4" class="rate_radio" title="4점">
+                                <label for="rating4"></label>
+                                <input type="checkbox" name="rating" id="rating5" value="5" class="rate_radio" title="5점">
+                                <label for="rating5"></label>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>감상평</th>
+                    <td><textarea name="review"></textarea></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right">
+                        <input type="button" value="취소" onclick="" />
+                        <input id='sendreview' type="submit" value="글작성" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <!-- 노래 평가 -->
+    <div id="side" style="position: fixed; right: 0px; top : 30%;">
+        <form action="{% url 'insertmatchreview' %}" method="post" id="matchform">
+            <table border="0">
+                <tr>
+                    <th>
+                        <div class="review_rating rating_point">
+                            <div class="warning_msg">책과 노래가 잘 맞는지 알려주세요.</div>
+                            <div class="rating">
+                                <div class="ratefill"></div>
+                                <!-- [D] 해당 별점이 선택될 때 그 점수 이하의 input엘리먼트에 checked 클래스 추가 -->
+                                <input type="checkbox" name="matchrating" id="matchrating1" value="1" class="rate_radio" title="1점">
+                                <label for="rating1"></label>
+                                <input type="checkbox" name="matchrating" id="matchrating2" value="2" class="rate_radio" title="2점">
+                                <label for="rating2"></label>
+                                <input type="checkbox" name="matchrating" id="matchrating3" value="3" class="rate_radio" title="3점" >
+                                <label for="rating3"></label>
+                                <input type="checkbox" name="matchrating" id="matchrating4" value="4" class="rate_radio" title="4점">
+                                <label for="rating4"></label>
+                                <input type="checkbox" name="matchrating" id="matchrating5" value="5" class="rate_radio" title="5점">
+                                <label for="rating5"></label>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>평가 적기</th>
+                    <td><textarea name="matchreview"></textarea></td>
+                </tr>
+                <input type="text" id='reviewbooktitle2' name='reviewbooktitle2' value='{{ CBTtitle }}' style="display:none">
+                <input type="text" id='matchreviewid2' name='matchreviewid2' value='{{ userinfo.userid }}' style="display:none">
+                <tr>
+                    <td colspan="2" align="right">
+                        <input type="button" value="취소" onclick="" />
+                        <input id='sendmatchreview' type="button" value="글작성" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</body>
+</html>

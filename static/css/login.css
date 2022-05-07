@@ -1,0 +1,48 @@
+<!--        * {-->
+<!--            font-family: 'Nanum Gothic', sans-serif;-->
+<!--        }-->
+
+    @font-face {
+        font-family: 'SCD2';
+        src:url('../fonts/SCDream3/SCDream2.otf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'SCD5';
+        src:url('../fonts/SCDream3/SCDream5.otf') format('truetype');
+    }
+    #login_page_body{
+        margin:0px;
+        padding:0px;
+        font-family: SCD5;
+    }
+
+    #companyinfo{
+        font-family: SCD2;
+    }
+
+    header{
+        width: 100%;
+        background-color: rgba(31, 158, 255, 1);
+    }
+    .TopLogo{
+        position: absolute;
+
+        left: 50%;
+        width: 150px;
+        height: 150px;
+        margin-left: -75px;
+    }
+
+    #login{
+        position: absolute;
+        left: 50%;
+        top: 225px;
+        border: double navy;
+        text-align: center;
+        width: 500px;
+        height: 350px;
+        padding: 10px;
+        padding-bottom: 20px;
+        margin-left: -250px;
+    }
