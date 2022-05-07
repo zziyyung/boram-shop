@@ -1,0 +1,133 @@
+/* -------------------customer.html------------------------------- */
+@font-face {font-family: 'SCD1'; src:url('../fonts/SCDream3/SCDream1.otf') format('truetype'); }
+@font-face {font-family: 'SCD2'; src:url('../fonts/SCDream3/SCDream2.otf') format('truetype'); }
+@font-face {font-family: 'SCD3'; src:url('../fonts/SCDream3/SCDream3.otf') format('truetype'); }
+@font-face {font-family: 'SCD4'; src:url('../fonts/SCDream3/SCDream4.otf') format('truetype'); }
+@font-face {font-family: 'SCD5'; src:url('../fonts/SCDream3/SCDream5.otf') format('truetype'); }
+@font-face {font-family: 'SCD6'; src:url('../fonts/SCDream3/SCDream6.otf') format('truetype'); }
+@font-face {font-family: 'SCD7'; src:url('../fonts/SCDream3/SCDream7.otf') format('truetype'); }
+@font-face {font-family: 'SCD8'; src:url('../fonts/SCDream3/SCDream8.otf') format('truetype'); }
+
+*{
+    margin:0;
+    padding:0;
+}
+
+/* page_head */
+#page_head{
+    background-color: aqua;
+}
+
+
+/* page_body */
+#body1{
+    background-color: #c1c1c1;
+}
+
+#title{
+    font-size: larger;
+    font-weight: bolder;
+    font-family: SCD7;
+}
+
+#new_title, #update_title{
+    color: rgb(0,191,255);
+    font-family: SCD8;
+}
+
+#notice{
+    border: 5px solid rgb(0,191,255);
+    border-left: none;
+    border-right: none;
+    width: 80%;
+    height: 7%;
+    line-height: 45px;
+}
+
+
+
+
+
+
+
+
+
+
+.topdiv{
+    padding: 40px 24px;
+    background: #f7f7f7;
+}
+.top{
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+.top img{
+    position: absolute;
+      top: -50px;
+      left: 600px;
+      width: 200px;
+      height: 200px
+}
+.bottomdiv{
+    max-width: 1000px;
+    margin: 0 auto;
+    border: double navy;
+}
+.bottom{
+    box-sizing: border-box;
+    padding: 32px 0 0;
+    background: #fff;
+}
+
+
+
+.question{
+    cursor: pointer;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.answer{
+    background: #f7f7f7;
+    display: none;
+}
+.num{
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+    color: #c1c1c1;
+    padding-right: 12px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.content{
+    padding: 0 34px 0 24px;
+    font-size: 16px;
+    line-height: 22px;
+    color: #242424;
+}
+footer{
+    border-top: 1px solid #e6e8eb;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    padding-left: 3rem;
+    background: #2f3142;
+    color: white;
+    font-family: SCD2;
+}
+
+#a_sub{
+    padding: 30px;
+    border: 1px solid black;
+    width: 75%;
+}
+
+.answer{
+    padding: 30px;
+    border: 1px solid black;
+    width: 75%;
+}
