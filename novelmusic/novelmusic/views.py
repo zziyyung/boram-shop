@@ -6,6 +6,10 @@ from django.contrib.auth.hashers import make_password, check_password
 from googleapiclient.discovery import build
 from oauth2client.tools import argparser
 import logging
+from django.utils import timezone
+from numpyencoder import NumpyEncoder
+import json
+from django.http import JsonResponse
 
 
 # import logging
@@ -26,16 +30,18 @@ NS = NovelStory.objects.all().values()
 M = Music.objects.all().values()
 MA = MusicAlbum.objects.all().values()
 ML = MusicLyrics.objects.all().values()
-MS =MusicSinger.objects.all().values()
+MS = MusicSinger.objects.all().values()
 C = Color.objects.all().values()
+R = Review.objects.all().values()
 
 NovelStory = pd.DataFrame(NS)
 NovelTotal = pd.DataFrame(N)
 SingSong = pd.DataFrame(ML)
 Singer = pd.DataFrame(MS)
-SongChart = pd.DataFrame()
+SongChart = pd.DataFrame(M)
 Album = pd.DataFrame(MA)
 Color = pd.DataFrame(C)
+Review = pd.DataFrame(R)
 
 
 #화신
@@ -60,7 +66,14 @@ def index(request):
 # 화신
 @csrf_exempt
 def booksearch(request):
-    booktitle = request.POST['book']
+    # if 'booktitle' in request.POST:
+    #     booktitle = request.POST['booktitle']
+    # else:
+    #     booktitle = request.POST['book']
+    if request.POST['booktitle']:
+        booktitle = request.POST['booktitle']
+    else:
+        booktitle = request.POST['book']
     #print(booktitle)
     ChoiceBookTotal = NovelTotal[NovelTotal['title']==booktitle]
     ChoiceBookStory = NovelStory[NovelStory['title']==booktitle]
@@ -73,33 +86,58 @@ def booksearch(request):
     CBSstory = ChoiceBookStory['story'].iloc[0]
     CBSreview = ChoiceBookStory['review'].iloc[0]
     CBSpiece = ChoiceBookStory['piece'].iloc[0]
+
+    ChoiceBookReview = Review[Review['booktitle']==booktitle]
+    CBId = list(ChoiceBookReview['userid'])
+    CBReview = list(ChoiceBookReview['review'])
+    CBDate = list(ChoiceBookReview['timeday'])
+    CBall = zip(CBId,CBReview,CBDate)
+
+    # id == sing['id']
     #searchsinger = 토픽['가수']
     #searchsong = 토픽['노래']
 
 
     #테이블 노래 정보
 
-
-
-
     #밑에 입력시 노래 url 가져옴
     #youtube_search(searchsinger,searchsong)
     #밑에서부터 가수랑 노래 입력시 유튜브 api로 해당 노래링크 가져옴
-    youtubetitle=list()
-    youtubeurl = list()
-    yt,yu = youtube_search('바이브','promise U')
-    youtubetitle.append(yt)
-    youtubeurl.append(yu)
-    playlist = zip(youtubetitle,youtubeurl)
-    print(youtubeurl)
-    print(youtubetitle)
-    print(playlist)
+    # youtubetitle=list()
+    # youtubeurl = list()
+    #yt,yu = youtube_search('바이브','promise U')
+    # youtubetitle.append(yt)
+    # youtubeurl.append(yu)
+    # playlist = zip(youtubetitle,youtubeurl)
+    # youtubedefault = youtubeurl[0]
+    # print(youtubeurl)
+    # print(youtubetitle)
+    # print(playlist)
     if (request.session.get('username')):
         user_id = request.session.get('username')
         user = Signup.objects.get(userid=user_id)
-        return render(request, 'booksearch.html', {'userinfo': user,'ChoiceBookTotal' : ChoiceBookTotal , 'ChoiceBookStory' : ChoiceBookStory, 'CBTcover' : CBTcover, 'CBTtitle' : CBTtitle , 'CBTauthor' : CBTauthor , 'CBTpublisher' : CBTpublisher , 'CBTprice' : CBTprice , 'CBSstory' : CBSstory , 'CBSreview' : CBSreview , 'CBSpiece' : CBSpiece,'playlist':playlist})
+        print(user_id,booktitle)
+        return render(request, 'booksearch.html',
+                          {'userinfo': user, 'ChoiceBookTotal': ChoiceBookTotal, 'ChoiceBookStory': ChoiceBookStory,
+                           'CBTcover': CBTcover, 'CBTtitle': CBTtitle, 'CBTauthor': CBTauthor,
+                           'CBTpublisher': CBTpublisher, 'CBTprice': CBTprice, 'CBSstory': CBSstory,
+                           'CBSreview': CBSreview, 'CBSpiece': CBSpiece, 'list': CBall})
     else:
-        return render(request, 'booksearch.html', {'ChoiceBookTotal' : ChoiceBookTotal , 'ChoiceBookStory' : ChoiceBookStory, 'CBTcover' : CBTcover, 'CBTtitle' : CBTtitle , 'CBTauthor' : CBTauthor , 'CBTpublisher' : CBTpublisher , 'CBTprice' : CBTprice , 'CBSstory' : CBSstory , 'CBSreview' : CBSreview , 'CBSpiece' : CBSpiece,'playlist':playlist})
+        return render(request, 'booksearch.html', {'ChoiceBookTotal' : ChoiceBookTotal , 'ChoiceBookStory' : ChoiceBookStory, 'CBTcover' : CBTcover, 'CBTtitle' : CBTtitle , 'CBTauthor' : CBTauthor , 'CBTpublisher' : CBTpublisher , 'CBTprice' : CBTprice , 'CBSstory' : CBSstory , 'CBSreview' : CBSreview , 'CBSpiece' : CBSpiece})#,'playlist':playlist,'musicdefault':youtubedefault})
+
+#화신
+@csrf_exempt
+def insertreview(request):
+    if request.method == 'POST':
+        print('받음')
+        booktitle2 = request.POST['forbookname']
+        userid = request.POST['foruserid']
+        rating = request.POST['rating']
+        review = request.POST['review']
+        print(booktitle2,userid,rating,review)
+        Review.objects.create(userid=userid,booktitle=booktitle2,rating=rating,review=review,timeday=timezone.now().date())
+        return redirect('/')
+
 
 # 지영
 def customer(request):
@@ -130,17 +168,25 @@ def login(request):
         userid = request.POST['username']
         userpw = request.POST['password']
 
+
+
         if userid and userpw:
-            user = Signup.objects.get(userid=userid)
+            if not Signup.objects.filter(userid=userid).exists():
+                errMsg = "아이디를 확인해주세요"
+                return render(request, 'login.html',{'errorid':errMsg})
+
+            elif userid and userpw:
+                user = Signup.objects.get(userid=userid)
 
             # if userPW == user.userPW:
-            if check_password(userpw, user.userpw):
-                print(userpw, user)
-                request.session['username'] = user.userid
-                # return render(request,'index.html',{'userinfo':user})
-                return redirect('/')
-            else:
-                return redirect('/login')
+                if check_password(userpw, user.userpw):
+                    print(userpw, user)
+                    request.session['username'] = user.userid
+                    # return render(request,'index.html',{'userinfo':user})
+                    return redirect('/')
+                elif not check_password(userpw, user.userpw):
+                    errMsg2 = "비밀번호를 확인해주세요"
+                    return render(request, 'login.html', {'errorid': errMsg2})
     else:
         return render(request, 'login.html')
 
@@ -189,14 +235,37 @@ def change_form(request):
 
     return redirect('/mypage')
 
+@csrf_exempt
 def likes(request):
-    pass
+    bookuserid = request.POST['userid']
+    booktitlelike = request.POST['booktitle']
+    booklikeimage = request.POST['bookimage']
+    bookprice = request.POST['bookprice']
+    Likes.objects.create(userid=bookuserid,novel_title=booktitlelike,novel_image=booklikeimage,book_price=bookprice)
+    messeage = '이 책 좋아요!'
+    result = {'result': messeage}
+    result = (json.dumps(result, cls=NumpyEncoder, indent=4, ensure_ascii=False))
+    return JsonResponse(result,safe=False)
+
+@csrf_exempt
+def unlikes(request):
+    bookuserid2 = request.POST['deluserid']
+    booktitlelike2 = request.POST['delbooktitle']
+    booklikeimage2 = request.POST['delbookimage']
+    bookprice2 = request.POST['delbookprice']
+    Likes.objects.filter(userid=bookuserid2,novel_title=booktitlelike2,novel_image=booklikeimage2,book_price=bookprice2).delete()
+
+    messeage2 = '이 책 이제 안좋아요...'
+    result2 = {'result2': messeage2}
+    result2 = (json.dumps(result2, cls=NumpyEncoder, indent=4, ensure_ascii=False))
+    return JsonResponse(result2,safe=False)
 
 
 # 화신
 #이 밑으로는 youtube 음악 검색입니다.
 def youtube_search(option1, option2):
-    DEVELOPER_KEY = "AIzaSyCWNfSQc4K4lFo7jnpMBFgQYpXNsfRDpDo"
+    # DEVELOPER_KEY = "AIzaSyCWNfSQc4K4lFo7jnpMBFgQYpXNsfRDpDo"
+    DEVELOPER_KEY = 'AIzaSyCrmFLOeyOsWrtV230eeno_gxVVJzcSr6s'
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
     videoaddres = []
@@ -223,7 +292,7 @@ def youtube_search(option1, option2):
                                           search_result["id"]["playlistId"]))
         videoaddres.append(search_result["id"]['videoId'])
         singtitle = option1 + ' ' + option2
-        createurl = 'https://www.youtube.com/embed/' + videoaddres[0]
+        createurl = 'https://www.youtube.com/embed/' + videoaddres[0]  #+ "?autoplay=1"
 
     print(createurl)
 

@@ -8,11 +8,81 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+    <!--
         function playmusic(dd){
             var link = dd
             $('#playvideo').attr('src',link);
         }
+    -->
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            //별점선택 이벤트 리스너
+            document.querySelector('.rating').addEventListener('click',function(e){
+                let elem = e.target;
+                if(elem.classList.contains('rate_radio')){
+                    rating.setRate(parseInt(elem.value));
+                }
+            })
 
+            //상품평 작성 글자수 초과 체크 이벤트 리스너
+            document.querySelector('.review_textarea').addEventListener('keydown',function(){
+                //리뷰 400자 초과 안되게 자동 자름
+                let review = document.querySelector('.review_textarea');
+                let lengthCheckEx = /^.{400,}$/;
+                if(lengthCheckEx.test(review.value)){
+                    //400자 초과 컷
+                    review.value = review.value.substr(0,400);
+                }
+            });
+        });
+        function Rating(){};
+        Rating.prototype.rate = 0;
+        Rating.prototype.setRate = function(newrate){
+            //별점 마킹 - 클릭한 별 이하 모든 별 체크 처리
+            this.rate = newrate;
+            document.querySelector('.ratefill').style.width = parseInt(newrate * 20) + 'px';
+            let items = document.querySelectorAll('.rate_radio');
+            items.forEach(function(item, idx){
+                if(idx < newrate){
+                    item.checked = true;
+                }else{
+                    item.checked = false;
+                }
+            });
+        }
+        let rating = new Rating();//별점 인스턴스 생성
+
+        $(function() {
+            $("#thislike").on('click', function() {
+                $.ajax({
+                    url: '/likes/',
+                    type:"POST",
+                    data : {'booktitle': '{{ CBTtitle }}', 'userid' : '{{ userinfo.userid }}' ,'bookimage':"{{ CBTcover }}",'bookprice':'{{ CBTprice }}' },
+                    dataType : "json",
+                    success: function(msg) {
+                        var obj = JSON.parse(msg)
+                        var messeage = obj.result
+                        alert(messeage)
+                    }
+                })
+            });
+        });
+        $(function(){
+            $("#unthislike").on('click', function() {
+                $.ajax({
+                    url: '/unlikes/',
+                    type:"POST",
+                    data : {'delbooktitle': '{{ CBTtitle }}', 'deluserid' : '{{ userinfo.userid }}','delbookimage':"{{ CBTcover }}",'delbookprice':'{{ CBTprice }}' },
+                    dataType : "json",
+                    success: function(msg) {
+                        var obj = JSON.parse(msg)
+                        var messeage = obj.result2
+                        alert(messeage)
+                    }
+                })
+            });
+        });
     </script>
 </head>
 <body>
@@ -66,13 +136,9 @@
             <text id="buyprice">{{ CBTprice }}</text>
         </div>
         <!-- 보류 thislike -->
-        <div id="thislike">
-            <div id="this_like"><button type="submit" id="like" onclick="{% url 'likes' %}">좋아요</button></div>
-            <script>
-                function likes() {
-                    {% url 'likes' %}
-                }
-            </script>
+        <div id="likepage">
+            <div id="thislike"><a>좋아요</a></div>
+            <div id="unthislike"><a>안좋아요</a></div>
         </div>
         <!-- 보류 thislike -->
 
@@ -86,10 +152,12 @@
             <div id="callcasher"></text>
         </div>
     </div>
+         <!--
     <div id="songplace">
         <div id="songlist"></div>
         <div id="songvideo"></div>
     </div>
+
     <div id="singplace">
         <div id="singlist">
             {% for i,j in playlist %}
@@ -97,10 +165,10 @@
             {% endfor %}
         </div>
         <div id="video">
-            <iframe id="playvideo" autoplay="1" controls loop >저작권문제
-            </iframe>
+            <iframe id="playvideo"  controls; loop; src="{{ musicdefault }}";>저작권문제</iframe>
         </div>
     </div>
+        -->
     <div id="bookplace2">
         <div id="bookinfo">
             <a id ="bookinfowhere">작품 소개</a></br>
@@ -110,22 +178,67 @@
             <a id = "booksellerinfowhere">출판사 서평</a></br>
             <text id="sellerinfo"> {{ CBSreview }}</text>
         </div>
-        <div id="bookreview">
-            <div id="booktotalscore">
-                <text id="boughtscore">구매자 별점</text>
-                <div id="boughttotal"></div>
-            </div>
-            <text id="checkscore">책을 평가해주세요</text>
-            <form>
-                <label for="star1"></label>
-                <label for="star2"></label>
-                <label for="star3"></label>
-                <label for="star4"></label>
-                <label for="star5"></label>
-                <textarea id="bookuserthink"></textarea>
-                <button id="usersthink">리뷰 남기기</button>
-            </form>
-        </div>
+        <a>리뷰 게시판</a>
+        <table border="0">
+            <col width="50" />
+            <col width="500" />
+            <col width="100" />
+            <tr>
+                <th>작성자</th>
+                <th>리뷰</th>
+                <th>작성일</th>
+            </tr>
+            {% if not list %}
+            <tr>
+                <th colspan="3">------------작성된 글이 없습니다------------</th>
+            </tr>
+            {% else %}
+                {% for id,review,date in list %}
+                    <tr>
+                        <td>{{ id }}</td>
+                        <td style="text-align:center">{{ review }}</td>
+                        <td>{{ date }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+        <form action="/insertreview/" method="post">
+            <table border="0">
+                <tr>
+                    <th>
+                        <div class="review_rating rating_point">
+                            <input type="hidden" id="foruserid" name="foruserid" value="{{ userinfo.userid }}"/>
+                            <input type="hidden" id="forbookname" name="forbookname" value="{{ CBTtitle }}"/>
+                            <div class="warning_msg">별점을 선택해 주세요.</div>
+                            <div class="rating">
+                                <div class="ratefill"></div>
+                                <!-- [D] 해당 별점이 선택될 때 그 점수 이하의 input엘리먼트에 checked 클래스 추가 -->
+                                <input type="checkbox" name="rating" id="rating1" value="1" class="rate_radio" title="1점">
+                                <label for="rating1"></label>
+                                <input type="checkbox" name="rating" id="rating2" value="2" class="rate_radio" title="2점">
+                                <label for="rating2"></label>
+                                <input type="checkbox" name="rating" id="rating3" value="3" class="rate_radio" title="3점" >
+                                <label for="rating3"></label>
+                                <input type="checkbox" name="rating" id="rating4" value="4" class="rate_radio" title="4점">
+                                <label for="rating4"></label>
+                                <input type="checkbox" name="rating" id="rating5" value="5" class="rate_radio" title="5점">
+                                <label for="rating5"></label>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th>감상평</th>
+                    <td><textarea name="review"></textarea></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right">
+                        <input type="button" value="취소" onclick="" />
+                        <input id='sendreview' type="submit" value="글작성" />
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
     <div id="bookplace3">
         <text id="bookhelp">이 책과 비슷한 책 추천</text>

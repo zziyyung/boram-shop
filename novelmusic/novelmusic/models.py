@@ -142,10 +142,7 @@ class Likes(models.Model):
     userid = models.CharField(max_length=50)
     novel_image = models.TextField(blank=True, null=True)
     novel_title = models.TextField(blank=True, null=True)
-    novel_author = models.TextField(blank=True, null=True)
-    song_image = models.TextField(blank=True, null=True)
-    song_title = models.TextField(blank=True, null=True)
-    song_singer = models.TextField(blank=True, null=True)
+    book_price = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -263,6 +260,18 @@ class NovelStory(models.Model):
         db_table = 'novel_story'
 
 
+class Review(models.Model):
+    userid = models.CharField(max_length=50)
+    rating = models.IntegerField(blank=True, null=True)
+    review = models.TextField(blank=True, null=True)
+    booktitle = models.CharField(max_length=100, blank=True, null=True)
+    timeday = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'review'
+
+
 class Signup(models.Model):
     userid = models.CharField(max_length=50)
     userpw = models.CharField(max_length=1000)
@@ -274,9 +283,9 @@ class Signup(models.Model):
     role = models.CharField(max_length=50)
 
     def __str__(self):
-        return str({'userid': self.userid, 'userpw': self.userpw, 'username':self.username,
-                    'usergender':self.usergender, 'useremail':self.useremail,
-                    'userbirthday':self.userbirthday,'userphone':self.userphone, 'role':self.role})
+        return str({'userid': self.userid, 'userpw': self.userpw, 'username': self.username,
+                    'usergender': self.usergender, 'useremail': self.useremail,
+                    'userbirthday': self.userbirthday, 'userphone': self.userphone, 'role': self.role})
 
     class Meta:
         managed = False
