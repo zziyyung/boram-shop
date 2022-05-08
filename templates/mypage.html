@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Page</title>
+    <title>감성서점</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/mypage.css' %}">
 
@@ -35,7 +35,12 @@
 
 </head>
 <body>
-
+    <!-- 상단바 -->
+    <div class="TopLogo">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/b3_logo.png' %}">
+        </a>
+    </div>
     <h1>My Page</h1>
     {% if request.session.username == userinfo.userid %}
         <div class="bar">
@@ -45,6 +50,8 @@
             </div>
         </div>
     {% endif %}
+
+    <!-- 찜하기 내용 -->
     <div id="forlikes"><a>찜 하기 목록</a>
         {% if liketable %}
             <form method="post" action="/booksearch/"  id="fromimage">

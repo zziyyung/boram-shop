@@ -17,7 +17,7 @@ def mypage(request):
             likebooktitle = list(liketable['novel_title'])
             likebookimage = list(liketable['novel_image'])
             likebookprice = list(liketable['book_price'])
-            print(likebookprice)
+            #print(likebookprice)
             likeallthing = zip(likebookimage,likebooktitle,likebookprice)
             return render(request,'mypage.html', {'userinfo':user,'liketable': likeallthing})
     else:
@@ -27,9 +27,9 @@ def change(request):
     if (request.session.get('username')):
         user_id = request.session.get('username')
         user = Signup.objects.get(userid=user_id)
-        return render(request, 'change.html', {'userinfo':user})
+        return render(request, 'change.html', {'userinfo':user}) # 주소 맞음
     else:
-        return render(request, 'change.html')
+        return render(request, 'change.html') # 주소 맞음
 
 def change_form(request):
 
@@ -50,4 +50,4 @@ def change_form(request):
     change_email = change.update(useremail=userEmail)
     change_phone = change.update(userphone=userPhone)
 
-    return redirect('/mypage')
+    return redirect('/mypage') # 주소 맞음 ( 다시 마이페이지로 돌아가기 )

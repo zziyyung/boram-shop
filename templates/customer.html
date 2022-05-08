@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>감성서점</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/customer.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -17,8 +17,24 @@
 </head>
 <body>
     <!-- page_head -->
-    <div id="page_head">
-        <a>로고 상단바</a>
+    <div class="TopLogo">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/b3_logo.png' %}">
+        </a>
+    </div>
+    <div id="head_signup">
+        {% if not request.session.username %}
+            <a href="{% url 'signup' %}"><span> 회원가입 </span></a>
+            <a href="{% url 'login' %}"><span> 로그인 </span></a>
+        {% else %}
+            {% if request.session.username == userinfo.userid %}
+                <a id="username">{{userinfo.userName}}</a>
+                <a href="{% url 'logout' %}"><span id="logout"> 로그아웃 </span></a>
+                <a href="{% url 'mypage' %}">
+                    <img src="{% static 'images/customer.png' %}" width=50px height=50px>
+                </a>
+            {% endif %}
+        {% endif %}
     </div>
 
     <!-- page_body -->
@@ -26,10 +42,9 @@
         <main role="main">  <!-- 문서의 주요한 내용을 담는 태그 -->
             <div id="body1">
                 <div class="top">
-                    <a id="tittle">무엇을 도와드릴까요?</a>
+                    <p id="tittle">무엇을 도와드릴까요?</p>
                     <p> 감성은 늘 고객들의 문의를 듣고,</p>
                     <p> 신속하게 조치하려고 노력하고 있습니다.</p>
-                    <img src="{% static 'images/b3_logo.png' %}" >
                 </div>
             </div>
             <br>

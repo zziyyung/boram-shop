@@ -248,7 +248,11 @@ LOGGING = {
             'level': 'DEBUG',
             #'propagate': True,
         },
-        'my': {
+        'book': {  # 검색어 저장하는 로거
+            'handlers': ['logstash'],
+            'level': 'DEBUG',
+        },
+        'visitor' : {
             'handlers': ['logstash'],
             'level': 'DEBUG',
         },

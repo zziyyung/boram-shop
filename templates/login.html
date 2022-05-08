@@ -3,25 +3,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>보람3조 | 소설...감성을 담댜</title>
+    <title>감성서점</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body>
-    <div id="page_head">
-        <div id="head_logo"></div>
-        <div id="head_title">
-            <div id="head_signup">
-                {% if not request.session.username %}
-                    <a href="{% url 'signup' %}"><span> 회원가입 </span></a>
-                    <a href="{% url 'login' %}"><span> 로그인 </span></a>
-                {% else %}
-                    <a href="{% url 'logout' %}"><span id="logout_text"> 로그아웃 </span></a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    <!-- 상단바 -->
+    <header class="header">
+        <h4>로고 상단바</h4>
+    </header>
+    <a class="TopLogo" href="{% url 'index' %}">
+        <img src="{% static 'images/b3_logo.png' %}">
+    </a>
+
+    <!-- 로그인 화면 -->
     <div id="login_page_body">
         <div id="login_form">
             <form action="{% url 'login' %}" method="post" id="login_form2">{% csrf_token %}
@@ -40,6 +36,7 @@
             <p id="copyright">Copyright by Multicoding Co., Ltd. All rights reserved.</p>
         </div>
     </div>
+
 {% if errorid %}
     <script>
         $( document ).ready( function() {
