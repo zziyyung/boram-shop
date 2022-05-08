@@ -4,16 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>보람3조 | 소설...감성을 담댜</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>감성서점</title>
+
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/booksearch.css' %}">
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
     <!-- 노래 재생 -->
     <script>
-        // function playmusic(dd){
-        //     var link = dd
-        //     $('#playvideo').attr('src',link);
-        // }
+        function playmusic(dd,cc,bb){
+             var link = dd
+             var album = bb
+             var altitle = cc
+             $('#playvideo').attr('src',link);
+             $('#album').attr('src',album);
+             $('#albumtitle').text(altitle);
+         }
     </script>
 
     <!-- 리뷰 -->
@@ -27,7 +37,7 @@
                 }
             })
 
-            //상품평 작성 글자수 초과 체크 이벤트 리스너
+            //상품평 작성 글자수 초과 체크 이벤트 리스너 ( ? )
             document.querySelector('.review_textarea').addEventListener('keydown',function(){
                 //리뷰 400자 초과 안되게 자동 자름
                 let review = document.querySelector('.review_textarea');
@@ -88,14 +98,72 @@
         });
     </script>
 
-    <!-- 구매하기 -->
+    <!-- 재영님 리뷰 보완 (별점 없을시 글작성 불가) -->
     <script>
-        $(function(){
-            $("#purchase").click(function(){
-                alert("구매서비스는 현재 준비중입니다")
+        function handleChange(checkbox) {
+            if(checkbox.checked == true) {
+                document.getElementById('sendreview').removeAttribute("disabled");
+            } else{
+                document.getElementById("sendreview").setAttribute("disabled", "disabled");
+            }
+        }
+    </script>
+
+    <!-- 화신님 리뷰 보완 ( 비회원시 리뷰 작성 불가 ) -->
+    {% if not request.session.username %}
+    <script>
+        $(function() {
+            $("#plzlogin").click(function() {
+                alert('로그인해주세요')
             })
         })
     </script>
+    {% endif %}
+
+    <!--로그인 구매하기 -->
+    <script>
+        $(function(){
+            $("#purchase").click(function(){
+                var IMP = window.IMP;
+                IMP.init("imp30145569");
+
+                IMP.request_pay({
+                    pg : 'kakao', // version 1.1.0부터 지원.
+                    pay_method : 'card',
+                    merchant_uid : 'merchant_' + new Date().getTime(),
+                    name : '{{ CBTtitle }}',
+                    amount : '{{ CBTprice }}',
+                    customer_uid : '{{ userinfo.username }}' + new Date().getTime(),
+                    buyer_email : '{{ userinfo.useremail }}',
+                    buyer_name : '{{ userinfo.username }}',
+                    buyer_tel : '{{ user.info.userphone }}',
+                    buyer_addr : '서울특별시 강남구 삼성동',
+                    buyer_postcode : '123-456',
+                    m_redirect_url : 'http://127.0.0.1:8000/booksearch/'
+                }, function(rsp) {
+                    if ( rsp.success ) {
+                        var msg = '결제가 완료되었습니다.';
+
+                    } else {
+                        var msg = '결제에 실패하였습니다.';
+                        msg += '에러내용 : ' + rsp.error_msg;
+                    }
+                    alert(msg);
+                });
+            })
+        });
+
+    </script>
+
+    <!-- 비로그인 구매하기 -->
+    <script>
+        $(function(){
+            $("#unpurchase").click(function(){
+                alert("로그인 후 이용해주세요")
+            })
+        })
+    </script>
+
 
     <!-- 노래평가 -->
     <script>
@@ -121,30 +189,39 @@
             });
        });
     </script>
+
+
 </head>
 <body>
-    <div id="head_left">
-        <img src="" id="logo">
+    <!-- 상단바 -->
+    <div class="TopLogo">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/b3_logo.png' %}">
+        </a>
     </div>
-    <div id="head_right">
+
+    <div id="head_signup">
         {% if not request.session.username %}
-            <a id="signup" href="/signup"><span> 회원가입 </span></a>
-            <a href="/login"><span> 로그인 </span></a>
+            <a href="{% url 'signup' %}"><span> 회원가입 </span></a>
+            <a href="{% url 'login' %}"><span> 로그인 </span></a>
         {% else %}
             {% if request.session.username == userinfo.userid %}
-                <a id="userid">{{ userinfo.username }}님 환영합니다</a>
+                <a id="username">{{userinfo.userName}}</a>
+                <a href="{% url 'logout' %}"><span id="logout"> 로그아웃 </span></a>
+                <a href="{% url 'mypage' %}">
+                    <img src="{% static 'images/customer.png' %}" width=50px height=50px>
+                </a>
             {% endif %}
         {% endif %}
     </div>
-    <div id="elk">
-        <text></text>
-    </div>
-    <div id="ImageForUser">
-        <div id="mypage">
-            <a href="{% url 'mypage' %}">마이페이지</a>
-        </div>
-    </div>
+
+    <!-- 책 정보란 -->
     <div id="bookplace">
+
+        <!-- 감성 배색 배경 고르기 css -->
+        <div id="bookplace" style="background-color:rgb({{ colorde }});">
+
+        <!-- 책 정보 1-->
         <div id="bookcover">
             <img src="{{ CBTcover }}">
         </div>
@@ -164,12 +241,23 @@
             <text id="buyprice">{{ CBTprice }}</text>
         </div>
 
-        <!-- 리디북스 보면 좋아요랑 합쳐져있는데 나중에 생각-->
+        <!-- 구매하기 -->
         <div>
-            <button id="purchase">구매하기</button>
+            {% if request.session.username %}
+                <button id="purchase">구매하기</button>
+            {% else %}
+                <button id="unpurchase">구매하기</button>
+            {% endif %}
         </div>
 
-        <!-- 비회원시랑 회원시의 좋아요 연결 다르게 해놓음 jquery에서 if문 쓰려고했는데 실패-->
+        <!-- 감성배색 파렛트 -->
+        <div id="colorpalet">
+            {% for i in colorlist %}
+                <div style="float:left; width:20px;height:30px;background-color:rgb({{ i }});"></div>
+            {% endfor %}
+        </div>
+
+        <!-- 좋아요 -->
         <div id="likepage">
             {% if not request.session.username %}
                 <a href="{% url 'login' %}"><button>좋아요</button></a>
@@ -179,25 +267,32 @@
                 <button id="unthislike">싫어요</button>
             {% endif %}
         </div>
-
-    </div>
-         <!-- 노래 리스트
-    <div id="songplace">
-        <div id="songlist"></div>
-        <div id="songvideo"></div>
     </div>
 
-    <div id="singplace">
-        <div id="singlist">
-            {% for i,j in playlist %}
-                <div onclick="playmusic('{{ j }}')">{{ i }}</div>
-            {% endfor %}
+    <!-- 책 정보 2 : 노래리스트 -->
+    <div>
+        <div id="songplace">
+            <div id="songlist"></div>
+            <div id="songvideo"></div>
         </div>
-        <div id="video">
-            <iframe id="playvideo"  controls; loop; src="{{ musicdefault }}";>저작권문제</iframe>
+    
+        <div id="singplace">
+            <div id="video">
+                <iframe id="playvideo" autoplay; controls; loop; src="{{ musicdefault }}";>저작권문제</iframe>
+                <!-- 앨범 이미지 : css -->
+                <img  id="album" src=""></img>
+                <div id="singlist">
+                    {% for i,j,a,b in playlist %}
+                        <div id="songchage" name="{{b}}" value="{{ a }}" onclick="playmusic('{{ j }}','{{a}}','{{b}}')">{{ i }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- 앨범 제목 : css -->
+            <div id="albumtitle" style="text-align : center"></div>
         </div>
     </div>
-        -->
+
+    <!-- 책 정보 3 : 작품 소개/서평/리뷰 -->
     <div id="bookplace2">
         <div id="bookinfo">
             <a id ="bookinfowhere">작품 소개</a></br>
@@ -208,8 +303,8 @@
             <text id="sellerinfo"> {{ CBSreview }}</text>
         </div>
 
-        <!-- 재영님이 수정중 -->
-        <a>리뷰 게시판</a>
+        <!-- 리뷰 게시판 -->
+        <p>리뷰 게시판</p>
         <table border="0">
             <col width="50" />
             <col width="500" />
@@ -233,42 +328,52 @@
                 {% endfor %}
             {% endif %}
         </table>
+        <!-- 리뷰 작성칸 -->
         <form action="{% url 'insertreview' %}" method="post">
-            <table border="0">
-                <tr>
-                    <th>
-                        <div class="review_rating rating_point">
-                            <input type="hidden" id="foruserid" name="foruserid" value="{{ userinfo.userid }}"/>
-                            <input type="hidden" id="forbookname" name="forbookname" value="{{ CBTtitle }}"/>
-                            <div class="warning_msg">별점을 선택해 주세요.</div>
-                            <div class="rating">
-                                <div class="ratefill"></div>
-                                <!-- [D] 해당 별점이 선택될 때 그 점수 이하의 input엘리먼트에 checked 클래스 추가 -->
-                                <input type="checkbox" name="rating" id="rating1" value="1" class="rate_radio" title="1점">
-                                <label for="rating1"></label>
-                                <input type="checkbox" name="rating" id="rating2" value="2" class="rate_radio" title="2점">
-                                <label for="rating2"></label>
-                                <input type="checkbox" name="rating" id="rating3" value="3" class="rate_radio" title="3점" >
-                                <label for="rating3"></label>
-                                <input type="checkbox" name="rating" id="rating4" value="4" class="rate_radio" title="4점">
-                                <label for="rating4"></label>
-                                <input type="checkbox" name="rating" id="rating5" value="5" class="rate_radio" title="5점">
-                                <label for="rating5"></label>
-                            </div>
-                        </div>
-                    </th>
-                </tr>
-                <tr>
-                    <th>감상평</th>
-                    <td><textarea name="review"></textarea></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="right">
-                        <input type="button" value="취소" onclick="" />
-                        <input id='sendreview' type="submit" value="글작성" />
-                    </td>
-                </tr>
-            </table>
+            <div id ="reviewtable">
+                <div id="review_rating rating_point">
+                    <input type="hidden" id="foruserid" name="foruserid" value="{{ userinfo.userid }}"/>
+                    <input type="hidden" id="forbookname" name="forbookname" value="{{ CBTtitle }}"/>
+                    <div class="warning_msg">별점을 선택해 주세요.</div>
+                    <div class="rating">
+                        <div class="ratefill"></div>
+                        <!-- [D] 해당 별점이 선택될 때 그 점수 이하의 input엘리먼트에 checked 클래스 추가 -->
+                        <input type="checkbox" name="rating" id="rating1" value="1" class="rate_radio" title="1점" onchange='handleChange(this);'>
+                        <label for="rating1"></label>
+                        <input type="checkbox" name="rating" id="rating2" value="2" class="rate_radio" title="2점" onchange='handleChange(this);'>
+                        <label for="rating2"></label>
+                        <input type="checkbox" name="rating" id="rating3" value="3" class="rate_radio" title="3점" onchange='handleChange(this);'>
+                        <label for="rating3"></label>
+                        <input type="checkbox" name="rating" id="rating4" value="4" class="rate_radio" title="4점" onchange='handleChange(this);'>
+                        <label for="rating4"></label>
+                        <input type="checkbox" name="rating" id="rating5" value="5" class="rate_radio" title="5점" onchange='handleChange(this);'>
+                        <label for="rating5"></label>
+                    </div>
+                </div>
+            </div>
+            <div id="textreview">
+                <br>
+                <div id="think">감상평</div>
+                <div>
+                    {% if not request.session.username %}
+                        <td><textarea name="matchreview" readonly id="plzlogin" placeholder="여러분의 소중한 리뷰 하나가 큰 힘이 됩니다.&#13;&#10;(별점을 정해야 리뷰를 보낼 수 있습니다.)"></textarea></td>
+                    {% else %}
+                        <td><textarea name="review" placeholder="여러분의 소중한 리뷰 하나가 큰 힘이 됩니다.&#13;&#10;(별점을 정해야 리뷰를 보낼 수 있습니다.)"></textarea></td>
+                    {% endif %}
+                </div>     
+            </div>
+    
+            <div id="button">
+                {% if not request.session.username %}
+                <input id='cancel' type="button" value="취소" />
+                <input id='sendreview' type="submit" value="글작성" disabled="disabled" />
+            </div>
+                {% else %}
+            <div id="button">
+                <input id='cancel' type="button" value="취소"  />
+                <input id='sendreview' type="submit" value="글작성" disabled="disabled" />
+                {% endif %}
+            </div>
         </form>
     </div>
 
@@ -312,6 +417,7 @@
             </table>
         </form>
     </div>
+
 
 </body>
 </html>

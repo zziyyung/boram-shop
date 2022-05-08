@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>보람3조 | 소설...감성을 담댜</title>
+    <title>감성서점</title>
 
     <!--자동 완성 제이쿼리 함수-->
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
@@ -90,9 +90,13 @@
     </script>
 </head>
 <body>
+    <!-- 상단바 -->
     <div class="TopLogo">
-        <img src="{% static 'images/b3_logo.png' %}" width=150px height=150px>
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/b3_logo.png' %}">
+        </a>
     </div>
+
     <div id="head_signup">
         {% if not request.session.username %}
             <a href="{% url 'signup' %}"><span> 회원가입 </span></a>
@@ -115,6 +119,8 @@
         <!--신간리스트-->
         <div id="NewBookBox">
             <div id="SlotNewBooks">
+                <p id="NewBook_title" >신간 도서</p>
+                <p id="NewBook_term" >매 월 둘째,넷째주 금요일 업데이트</p>
                 {% for i,j in newbooks5 %}
                     <img src="{{ i }}" value="{{ j }}" class="active" id="{{j}}" onclick="findthis('{{j}}')">
                 {% endfor %}
@@ -122,6 +128,8 @@
         </div>
         <!--베스트셀러-->
         <div class="BestList">
+            <p id="BestBook_title" >베스트셀러 TOP10</p>
+            <p id="BestBook_term" >매 월 둘째,넷째주 금요일 업데이트</p>
             {% for i,j in bestbooks10 %}
                 <img src="{{ i }}" value="{{ j }}"  onclick="findthis('{{j}}')">
             {% endfor %}
@@ -200,10 +208,17 @@
         </div>
 
     </form>
-    <span id="DownWrite">
-        <span id="something">기업 소개?</span>
-        <a href="{% url 'customer' %}"><span>고객센터</span></a>
-    </span>
+
+    <!-- css: 이미지 때문에 밑에 기업소개가 안 보여서 css 잘 잡아주세요 <br>은 지우셔도 됩니다 -->
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    
+    <div>
+        <span id="DownWrite">
+            <span id="something">기업 소개?</span>
+            <a href="{% url 'customer' %}"><span>고객센터</span></a>
+        </span>
+    </div>
+    
 
     <script>
         $( document ).ready( function() {

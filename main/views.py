@@ -47,7 +47,7 @@ def index(request):
     Topic7title = list(Topic7['title'])
     Topic8title = list(Topic8['title'])
     Topic9title = list(Topic9['title'])
-    print(Topic0title)
+    #print(Topic0title)
 
 
     Topic0image = list(Topic0['coversmallurl'])

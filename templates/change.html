@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Change</title>
+    <title>감성서점</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/change.css' %}">
     <style>
         
@@ -38,6 +38,13 @@
 
 <body>
 <body>
+    <!-- 상단바 -->
+    <div class="TopLogo">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'images/b3_logo.png' %}">
+        </a>
+    </div>
+
     <div id="page_head">
         <div id="head_logo"></div>
         <div id="head_title">
@@ -52,6 +59,7 @@
         </div>
     </div>
 
+    <!-- 내 정보 수정 내용 -->
     <div class="change_page_body">
         <div id="change_body">
             <form action="{% url 'change_form' %}" method="post">{% csrf_token %}
@@ -81,7 +89,7 @@
 
                 </div>
                 <div id="form4">
-                    <div id="form_submit"><input type=" ubmit" value="수정하기"></div>
+                    <div id="form_submit"><input type="submit" value="수정하기"></div>
                     <div id="form_cancle"><input type="button" value="뒤로가기" onclick="location.href='../'" ></div>
                 </div>
             </form>
