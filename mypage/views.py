@@ -1,8 +1,7 @@
 from django.shortcuts import render,redirect
-from main.models import Signup
+from boram3.models import Signup , Likes
 from django.contrib.auth.hashers import make_password
 import pandas as pd
-from main.models import Likes
 
 def mypage(request):
     L = Likes.objects.all().values()

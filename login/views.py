@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from main.models import Signup
+from boram3.models import Signup
 # 비밀번호 암호화
 from django.contrib.auth.hashers import make_password, check_password
 # 로그 수집 import

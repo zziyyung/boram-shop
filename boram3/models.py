@@ -143,6 +143,8 @@ class Likes(models.Model):
     novel_image = models.TextField(blank=True, null=True)
     novel_title = models.TextField(blank=True, null=True)
     book_price = models.CharField(max_length=50, blank=True, null=True)
+    modification_time = models.DateTimeField()
+    insertion_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -313,6 +315,8 @@ class Signup(models.Model):
     useremail = models.CharField(max_length=200)
     userphone = models.CharField(max_length=50)
     role = models.CharField(max_length=50)
+    modification_time = models.DateTimeField()
+    insertion_time = models.DateTimeField()
 
     class Meta:
         managed = False

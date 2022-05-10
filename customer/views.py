@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from main.models import Signup
+from boram3.models import Signup
 
 def customer(request):
     if (request.session.get('username')):

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 import pandas as pd
 # 전체 모델 import
-from main.models import *
+from boram3.models import *
 # 로그 수집 import
 import logging
 # post방식 받을 때 csrf import ( html에서 안 쓰고 views에서 사용 )
