@@ -142,9 +142,10 @@ class Likes(models.Model):
     userid = models.CharField(max_length=50)
     novel_image = models.TextField(blank=True, null=True)
     novel_title = models.TextField(blank=True, null=True)
+    song_image = models.TextField(blank=True, null=True)
+    song_title = models.TextField(blank=True, null=True)
+    song_singer = models.TextField(blank=True, null=True)
     book_price = models.CharField(max_length=50, blank=True, null=True)
-    modification_time = models.DateTimeField()
-    insertion_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -214,8 +215,6 @@ class MusicLyrics(models.Model):
     title = models.TextField(blank=True, null=True)
     singer = models.TextField(blank=True, null=True)
     lyrics = models.TextField(blank=True, null=True)
-    modification_time = models.DateTimeField()
-    insertion_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -254,8 +253,6 @@ class Novel(models.Model):
     piece = models.TextField(blank=True, null=True)
     dominant_topic = models.TextField(db_column='Dominant_Topic', blank=True, null=True)  # Field name made lowercase.
     topic_keywords = models.TextField(db_column='Topic_Keywords', blank=True, null=True)  # Field name made lowercase.
-    modification_time = models.DateTimeField()
-    insertion_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -286,12 +283,42 @@ class NovelStory(models.Model):
     story = models.TextField(blank=True, null=True)
     review = models.TextField(blank=True, null=True)
     piece = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'novel_story'
+
+
+class NovelTopic(models.Model):
+    dominant_topic = models.TextField(db_column='Dominant_Topic', blank=True, null=True)  # Field name made lowercase.
+    topic_keywords = models.TextField(db_column='Topic_Keywords', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'novel_topic'
+
+
+class Novelnovel(models.Model):
+    itemid = models.TextField(db_column='itemId', blank=True, null=True)  # Field name made lowercase.
+    title = models.TextField(blank=True, null=True)
+    pubdate = models.TextField(db_column='pubDate', blank=True, null=True)  # Field name made lowercase.
+    coversmallurl = models.TextField(db_column='coverSmallUrl', blank=True, null=True)  # Field name made lowercase.
+    coverlargeurl = models.TextField(db_column='coverLargeUrl', blank=True, null=True)  # Field name made lowercase.
+    publisher = models.TextField(blank=True, null=True)
+    pricestandard = models.TextField(db_column='priceStandard', blank=True, null=True)  # Field name made lowercase.
+    customerreviewrank = models.TextField(db_column='customerReviewRank', blank=True, null=True)  # Field name made lowercase.
+    author = models.TextField(blank=True, null=True)
+    isbn = models.TextField(blank=True, null=True)
+    link = models.TextField(blank=True, null=True)
+    story = models.TextField(blank=True, null=True)
+    review = models.TextField(blank=True, null=True)
+    piece = models.TextField(blank=True, null=True)
     modification_time = models.DateTimeField()
     insertion_time = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'novel_story'
+        db_table = 'novelnovel'
 
 
 class Review(models.Model):
@@ -307,6 +334,7 @@ class Review(models.Model):
 
 
 class Signup(models.Model):
+    id = models.IntegerField(primary_key=True)
     userid = models.CharField(max_length=50)
     userpw = models.CharField(max_length=1000)
     username = models.CharField(max_length=50)
@@ -315,8 +343,11 @@ class Signup(models.Model):
     useremail = models.CharField(max_length=200)
     userphone = models.CharField(max_length=50)
     role = models.CharField(max_length=50)
-    modification_time = models.DateTimeField()
-    insertion_time = models.DateTimeField()
+
+    def __str__(self):
+        return str({'userid': self.userid, 'userpw': self.userpw, 'username': self.username,
+                    'usergender': self.usergender, 'useremail': self.useremail,
+                    'userbirthday': self.userbirthday, 'userphone': self.userphone, 'role': self.role})
 
     class Meta:
         managed = False
