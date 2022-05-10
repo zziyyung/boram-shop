@@ -91,9 +91,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'novelmusic',  # 데이터베이스의 이름
-        'USER': 'jiyoung',
-        'PASSWORD': 'votmdnjem',
-        'HOST': '35.77.242.184',  # 박지영 gcp mysql 외부 연동 (외부IP)
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',  # 박지영 gcp mysql 외부 연동 (외부IP)
         'PORT': '3306'
     }
 }
