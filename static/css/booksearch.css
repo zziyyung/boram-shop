@@ -1,163 +1,492 @@
-<style>
-    body{
-        background-color: white;
-    }
-    @font-face {
-        font-family: 'SCD2';
-        src:url('../fonts/SCDream3/SCDream2.otf') format('truetype');
-    }
+/* -------------------index.html------------------------------- */
+@font-face {font-family: 'SCD1'; src:url('../fonts/SCDream3/SCDream1.otf') format('truetype'); }
+@font-face {font-family: 'SCD2'; src:url('../fonts/SCDream3/SCDream2.otf') format('truetype'); }
+@font-face {font-family: 'SCD3'; src:url('../fonts/SCDream3/SCDream3.otf') format('truetype'); }
+@font-face {font-family: 'SCD4'; src:url('../fonts/SCDream3/SCDream4.otf') format('truetype'); }
+@font-face {font-family: 'SCD5'; src:url('../fonts/SCDream3/SCDream5.otf') format('truetype'); }
+@font-face {font-family: 'SCD6'; src:url('../fonts/SCDream3/SCDream6.otf') format('truetype'); }
+@font-face {font-family: 'SCD7'; src:url('../fonts/SCDream3/SCDream7.otf') format('truetype'); }
+@font-face {font-family: 'SCD8'; src:url('../fonts/SCDream3/SCDream8.otf') format('truetype'); }
 
-    @font-face {
-        font-family: 'SCD5';
-        src:url('../fonts/SCDream3/SCDream5.otf') format('truetype');
-    }
+*{
+    margin:0;
+    padding:0;
+}
 
-    @font-face {
-        font-family: 'SCD7';
-        src:url('../fonts/SCDream3/SCDream7.otf') format('truetype');
-    }
-    header{
-        width: 100%;
-        background-color: rgba(31, 158, 255, 1);
-    }
-    .TopLogo{
-        float: left;
-        padding-left: 50px;
-        background-color: white;
-<!--            border: 1px solid black;-->
-    }
-    .TopLogo img{
-        width: 100px;
-        height: 100px;
-        z-index: 1;
-    }
-    #head_right{
-        width: 90%;
-        height: 100px;
-        place-items: center;
-        text-align: right;
-        padding: 10px;
-        font-size: 20px;
-        border-bottom: double black;
-        font-family: SCD5;
-        margin: 0px auto;
-        background-color: white;
-    }
-    #head_right text{
-        padding-right: 35%;
-        font-size:60px;
-        font-family: SCD7;
-        margin: 0px auto;
-        color: rgba(125, 125, 125);
-    }
-    #bookplace{
-        width: 800px;
-        margin: 0px auto;
-        padding: 10px;
-        background-color: white;
-    }
-    #bookcover{
-        padding-left: 10px;
-        float: left;
-    }
-    #bookcover img{
-        width: 110%;
-        height: 110%;
-    }
-    #bookright{
-        width: 60%;
-        padding: 10px;
-        font-family: SCD5;
-        font-size:20px;
-        float: right;
-    }
-    #title{
-        font-family: SCD7;
-        font-size:25px;
-        border-bottom: 2px solid black;
-    }
-    #likepage{
-        padding-left: 10px;
-        font-family: SCD5;
-        clear: left;
+/* page_head */
+.page_head{
+    border-radius: 30px;
+    border-bottom: 5px;
+}
+#TopLogo{
+    float: left;
+    padding-left: 80px;
+    display: inline;
+    float: left;
+    top: 50px;
+    position: relative;
+}
+#TopLogo:hover{
+    cursor: pointer;
+}
+#bookplace2{
+    width : 1200px;
+    text-align: left;
+    padding: 110px 60px 0px 20%;
+    line-height: 30px;
+}
+#down{
+    height:30px;
+    float:right;
+}
+#up {
+    height:30px;
+    float :right;
+}
+#title{
+    position: relative;
+    font-size: 45px;
+    top: 60px;
+    left: 8px;
+    color: #1E9EFF;
+    font-family: SCD8;
+    margin-right: 15px;
+}
 
-    }
-    #bookplace2{
-        width: 800px;
-        font-size:15px;
-        margin: 0px auto;
-        padding: 10px;
-        background-color: white;
-    }
-    #thislike{
-        display: inline;
-    }
-    #unthislike{
-        display: inline;
-    }
-    #bookinfo{
-        border-bottom: 2px solid black;
-        padding-bottom: 10px;
-        line-height: 25px;
-    }
-    #bookinfowhere{
-        color: rgba(125, 125, 125);
-        font-family: SCD7;
-        font-size:20px;
-    }
-    #bookinfostory{
-        font-family: SCD5;
-    }
-    #booksellerinfo{
-        border-bottom: 2px solid black;
-        padding-bottom: 10px;
-        line-height: 25px;
-    }
-    #booksellerinfowhere{
-        color: rgba(125, 125, 125);
-        font-family: SCD7;
-        font-size:20px;
-    }
-    #sellerinfo{
-        font-family: SCD5;
-    }
-    #bookplace3{
-        width: 800px;
-        margin: 0px auto;
-        padding: 10px;
-        background-color: white;
-        font-family: SCD5;
-    }
-    #review{
-        color: rgba(125, 125, 125);
-        font-family: SCD7;
-        font-size:20px;
-    }
-    #reviewtalbe{
-        font-family: SCD5;
-        width: 100%;
-        margin: 0px auto;
-        text-align: center;
-    }
-    #review_rating rating_point{
-        margin: 0px auto;
-        border: 1px solid black;
-    }
-    textarea{
-        width: 500px;
-        margin: 0px auto;
-    }
-    #bookplace4{
-        width: 800px;
-        margin: 0px auto;
-        padding: 10px;
-        background-color: white;
-        font-family: SCD5;
-    }
-    #bookhelp{
-        color: rgba(125, 125, 125);
-        font-family: SCD7;
-        font-size:20px;
-    }
 
-</style>
+#head_signup{
+    font-family: SCD3;
+    font-size: 12px;
+    /* text-align: right; */
+    height: 160px;
+    border-bottom: 2px solid #ebeeefc1;
+    font-family: SCD6;
+}
+
+
+#search{
+    width: 582px;
+    height: 52px;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    color: #212529;
+    border-color: #212529;
+    border-radius: 3px;
+    font-family: SCD6;
+    position: relative;
+    top: 50px;
+    left: 10px;
+}
+
+#search{
+    width: 582px;
+    height: 52px;
+    padding-left:20px;
+
+    margin: 0;
+    font-size: 22px;
+    color: #212529;
+    border-color: #212529;
+    border-radius: 3px;
+    font-family: SCD6;
+    position: relative;
+    top: -10px;
+    left: 200px;
+}
+
+#search2{
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    width:100px; height: 55px;
+    border: none; border-radius: 5px;
+    background-color: rgb(135,206,250);
+    text-align: center;
+    font-family: SCD7;
+    position: relative;
+    top: -10px;
+    left: 200px;
+}
+#search2:hover{
+    background-color:rgb(0,191,255);
+    cursor: pointer;
+}
+
+
+#head_signup2{
+    height: 500px;
+
+}
+
+#signup, #login, #center{
+    font-size: 20px;
+    position: relative;
+    top: 10px;
+    left: 1800px;
+    color: #787878;
+    font-family: SCD6;
+    margin: 10px;
+}
+
+#mp_icon{
+    position: relative;
+    left:880px;
+    top: 50px;
+}
+
+#logout{
+    position: relative;
+    left:830px;
+    font-size: 20px;
+    font-family: SCD6;
+    top: 40px;
+}
+#username{
+    color:black;
+    left:790px;
+    position: relative;
+    font-size: 22px;
+    top:40px;
+}
+
+#top_pic{
+    margin-top: 30px;
+    height: 400px;
+    position: relative;
+    background-image: url('/static/images/customer_pic.png');
+}
+
+#image_dark{
+    background-color: #242424;
+    ; /*살짝 투명한 검정으로 배경색*/
+    opacity: 0.6;
+    width:100%; height:400px; position: absolute; /*다른 요소들 위로 겹쳐질 수 있게함*/
+}
+
+
+.top{
+    position: absolute;
+    text-align: center;
+    color: whitesmoke;
+    font-family: SCD5;
+    top: 160px;
+    left:950px;
+    font-size: 30px;
+    line-height: 150%;
+}
+
+/* page_body */
+#page_body{
+    background-color: #ebf6ff;
+}
+#booktitle{
+    width: 700px;
+}
+
+#search_title{
+    font-size: 43px;
+    font-family: SCD7;
+    border-bottom: 2px solid rgb(151, 165, 179);
+}
+
+#bookwriteperson, #booksell, #bookprice{
+    font-size: 20px;
+}
+
+#bookwritepersonwhere, #booksellwhere, #bookpricewhere{
+    font-family: SCD4;
+}
+#whowirte, #seller, #buyprice, #won{
+    font-family: SCD6;
+}
+
+#base{
+    padding-top: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+    text-align: center;
+    width: 1500px;
+    height: 600px;
+    position: relative;
+    left: 14%;
+    top: 50px;
+    background-color: white;
+    border-radius: 10px;
+
+}
+#bookcover{
+    width: 210px;
+    height: 350px;
+    float:left;
+}
+#bookcover_image{
+    margin-top: 80px;
+    width:260px;
+    height:360px;
+    position: relative;
+    float:left;
+    right: 30px;
+    box-shadow: 5px 5px 10px;
+}
+#book_simple{
+    width:290px;
+    height:350px;
+    float: left;
+    position: relative;
+    left: 70px;
+    margin-top: 50px;
+    padding: 0px 20px 0px 20px;
+    text-align:left;
+}
+
+#unpurchase, #purchase{
+    background-color: rgb(135,206,250);
+    font-family: SCD6;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 40px;
+    width:200px; height: 60px;
+    border: none; border-radius: 5px;
+    margin-top: 20px;
+}
+
+#unpurchase:hover, #purchase:hover{
+    background-color: rgb(0,191,255);
+    cursor: pointer;
+}
+
+#book_simple > .bookinfo{
+    margin: 5px;
+}
+
+.like_icon{
+    position: relative;
+    margin-top: 35px;
+    left: -5px;
+    margin: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    color: #fff;
+    border-radius: 5px;
+    border: 3px solid #a6a7a9;
+    opacity: 0.7;
+}
+
+#dislike{
+    position: relative;
+
+    top: 3px;
+}
+
+.like_icon:hover{
+    border: 4px solid black;
+    opacity: 1;
+}
+
+/* 감성배색 */
+.gamsung_title{
+    margin-top: 20px;
+    font-family: SCD6;
+    font-size: 25px;
+}
+#colorpalet{
+    height: 130px;
+    width: 500px;
+    float: left;
+    position: relative;
+    padding: 10px 10px 0px 10px;
+}
+
+/* 노래 */
+#songbase{
+    height: 360px;
+    width: 450px;
+    left: 70px;
+    position: relative;
+    float: left;
+}
+#recommendation{
+    font-family: SCD7;
+    font-size: 20px;
+}
+#singlist{
+    width:480px;
+    height: 108px;
+    padding: 10px;
+    text-align: left;
+}
+
+#songchage{
+    font-size: 18px;
+    font-family: SCD5;
+    border: 2px solid lightslategray;
+    border-left: none;
+    border-right: none;
+}
+
+
+.bookmenu{
+    text-align: left;
+    padding-left: 40px;
+    padding-top: 30px;
+    font-family:SCD7;
+    font-size: 28px;
+    border-padding:1px;
+    border-bottom: 3px solid gray;
+}
+iframe{
+    height:300px;
+    width: 500px;
+}
+
+
+#video{
+    position: relative;
+    top: 40px;
+    left: 400px;
+}
+
+
+/* ---------------------------------- */
+.side{
+    position: fixed; bottom: 20%;right: 1%;width: 360px; height:370px;
+    padding:10px;
+    background-color: #d1eefc;
+    border:6px; border-color:rgba(125, 125, 125);border-radius:5px
+}
+
+#warning_msg{
+    height: 40px;
+    color: black;
+    font-family: SCD6;
+    font-size:20px;
+}
+
+#matchrating1, #matchrating2, #matchrating3, #matchrating4, #matchrating5{
+    margin-left: 5px;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+
+
+#sendmatchreview{
+    margin-top: 30px;
+    width:130px; height: 30px;
+    border: none; border-radius: 5px;
+    background-color: rgb(135,206,250);
+    text-align: center;
+    font-family: SCD7;
+    margin-left: 33px;
+}
+#sendmatchreview:hover{
+    background-color: rgb(0,191,255);
+    cursor: pointer;
+}
+
+#cancel_but{
+    width:130px; height: 30px;
+    border: none; border-radius: 5px;
+    margin-left: 20px;font-family: SCD7;
+}
+
+#cancel_but:hover{
+    background-color: rgba(177,177,177,0.5);
+}
+
+#reviewbooktitle2{
+    font-family:SCD6;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 5px;
+    width:100%;
+    border-radius:5px;
+    background-color: #1E9EFF;
+    color: white;
+    border-color:rgba(240,240,240);
+    padding-bottom:2px;
+}
+
+#matchreviewid2{
+    font-family:SCD5;
+    font-size: 15px;
+    margin-bottom: 5px;
+    width:96%;
+    border-radius:3px;
+    padding-left: 8px;
+    border-color:rgba(240,240,240);
+    padding-bottom:2px;
+}
+
+#musicreview{
+    width:94%;
+    font-family: SCD6;
+    border-radius: 5px;
+    height:100px;
+    resize: none;
+}
+
+
+
+
+#review{
+    color: rgba(125, 125, 125);
+    font-family: SCD7;
+    font-size:20px;
+
+}
+.warning_msg{
+    color: rgba(125, 125, 125);
+    font-family: SCD7;
+    font-size:20px;
+    text-align: center;
+}
+.rating{
+    text-align: center;
+}
+#reviewtable{
+    padding-top: 25px;
+    font-family: SCD5;
+    margin-left: 10px;
+}
+
+
+#textreview{
+    width: 100%;
+}
+#think{
+    color: rgba(125, 125, 125);
+    font-family: SCD7;
+    font-size:20px;
+    text-align: center;
+
+}
+textarea{
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+}
+#button{
+    text-align:right;
+    clear: right;
+}
+#cancel{
+
+    padding: 5px;
+}
+#sendreview{
+
+    padding: 5px;
+}
+#page_foot{
+    position:relative;
+    max-width: 100%;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    color:grey;
+    background-color: #ebf6ff;
+}

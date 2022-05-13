@@ -17,13 +17,25 @@ Review = pd.DataFrame(R)
 def index(request):
     newbooks = NovelTotal.sort_values(by=['pubdate'], ascending=False).head(5)
     Ntitlelist = list(newbooks['title'])
+<<<<<<< Updated upstream
+    Nbookauthor = list(newbooks['author'])
     Nbookimage = list(newbooks['coversmallurl'])
-    newbooks5 = zip(Nbookimage,Ntitlelist)
+=======
+    Nbookimage = list(newbooks['coversmallurl'])
+    Nbookauthor = list(newbooks['author'])
+>>>>>>> Stashed changes
+    newbooks5 = zip(Nbookimage,Ntitlelist,Nbookauthor)
     #신간리스트 타이틀은 Ntitle,북표지는 Nbookimage
     bestbooks = NovelTotal.head(10)
     Btitlelist = list(bestbooks['title'])
+<<<<<<< Updated upstream
+    Bbookauthor = list(bestbooks['author'])
     Bbookimage = list(bestbooks['coversmallurl'])
-    bestbooks10 = zip(Bbookimage, Btitlelist)
+=======
+    Bbookimage = list(bestbooks['coversmallurl'])
+    Bbookauthor = list(bestbooks['author'])
+>>>>>>> Stashed changes
+    bestbooks10 = zip(Bbookimage, Btitlelist,Bbookauthor)
     #베스트 셀러는 북표지만 가져옴 (Bbooklist)
 
     Topic1 = (NovelTotal[NovelTotal['dominant_topic'] == '1']).sample(n=7)
@@ -47,7 +59,21 @@ def index(request):
     Topic7title = list(Topic7['title'])
     Topic8title = list(Topic8['title'])
     Topic9title = list(Topic9['title'])
+<<<<<<< Updated upstream
+
+    Topic0author = list(Topic0['author'])
+    Topic1author = list(Topic1['author'])
+    Topic2author = list(Topic2['author'])
+    Topic3author = list(Topic3['author'])
+    Topic4author = list(Topic4['author'])
+    Topic5author = list(Topic5['author'])
+    Topic6author = list(Topic6['author'])
+    Topic7author = list(Topic7['author'])
+    Topic8author = list(Topic8['author'])
+    Topic9author = list(Topic9['author'])
+=======
     #print(Topic0title)
+>>>>>>> Stashed changes
 
 
     Topic0image = list(Topic0['coversmallurl'])
@@ -61,6 +87,20 @@ def index(request):
     Topic8image = list(Topic8['coversmallurl'])
     Topic9image = list(Topic9['coversmallurl'])
 
+<<<<<<< Updated upstream
+=======
+    Topic0author = list(Topic0['author'])
+    Topic1author = list(Topic1['author'])
+    Topic2author = list(Topic2['author'])
+    Topic3author = list(Topic3['author'])
+    Topic4author = list(Topic4['author'])
+    Topic5author = list(Topic5['author'])
+    Topic6author = list(Topic6['author'])
+    Topic7author = list(Topic7['author'])
+    Topic8author = list(Topic8['author'])
+    Topic9author = list(Topic9['author'])
+
+>>>>>>> Stashed changes
 
     Topic0write = Topic0['topic_keywords'].iloc[0]
     Topic1write = Topic1['topic_keywords'].iloc[0]
@@ -75,16 +115,16 @@ def index(request):
 
 
 
-    Topic0list = zip(Topic0title, Topic0image)
-    Topic1list = zip(Topic1title, Topic1image)
-    Topic2list = zip(Topic2title, Topic2image)
-    Topic3list = zip(Topic3title, Topic3image)
-    Topic4list = zip(Topic4title, Topic4image)
-    Topic5list = zip(Topic5title, Topic5image)
-    Topic6list = zip(Topic6title, Topic6image)
-    Topic7list = zip(Topic7title, Topic7image)
-    Topic8list = zip(Topic8title, Topic8image)
-    Topic9list = zip(Topic9title, Topic9image)
+    Topic0list = zip(Topic0title, Topic0image,Topic0author)
+    Topic1list = zip(Topic1title, Topic1image,Topic1author)
+    Topic2list = zip(Topic2title, Topic2image,Topic2author)
+    Topic3list = zip(Topic3title, Topic3image,Topic3author)
+    Topic4list = zip(Topic4title, Topic4image,Topic4author)
+    Topic5list = zip(Topic5title, Topic5image,Topic5author)
+    Topic6list = zip(Topic6title, Topic6image,Topic6author)
+    Topic7list = zip(Topic7title, Topic7image,Topic7author)
+    Topic8list = zip(Topic8title, Topic8image,Topic8author)
+    Topic9list = zip(Topic9title, Topic9image,Topic9author)
 
 
     # {'Topic0write':Topic0write,'Topic0list':Topic0list,'Topic1write':Topic1write,'Topic1list':Topic1list,'Topic2write':Topic2write,'Topic2list':Topic2list,'Topic3write':Topic3write,'Topic4list':Topic4list,'Topic5write':Topic5write,'Topic5list':Topic5list,'Topic6write':Topic6write,'Topic6list':Topic6list,'Topic7write':Topic7write,'Topic7list':Topic7list,'Topic8write':Topic8write,'Topic8list':Topic8list,'Topic9write':Topic9write,'Topic9list':Topic9list}
@@ -110,11 +150,19 @@ def likes(request):
     bookprice = request.POST['bookprice']
 
     # 테이블에 넣기 : get_or_create -> 있으면 가져오고 없으면 생성해라
+<<<<<<< Updated upstream
+    # Likes.objects.get_or_create(userid=bookuserid,novel_title=booktitlelike,novel_image=booklikeimage,book_price=bookprice)
+
+    if Likes.objects.get(userid=bookuserid,novel_title=booktitlelike,novel_image=booklikeimage,book_price=bookprice):
+        # ajax
+        messeage = '이 책 좋아요 !'
+=======
     Likes.objects.get_or_create(userid=bookuserid,novel_title=booktitlelike,novel_image=booklikeimage,book_price=bookprice)
 
     if Likes.objects.get:
         # ajax
-        messeage = '이미 좋아했어요!'
+        messeage = '이 책 좋아요!'
+>>>>>>> Stashed changes
         result = {'result': messeage}
         result = (json.dumps(result, cls=NumpyEncoder, indent=4, ensure_ascii=False))
     else:
@@ -132,7 +180,11 @@ def unlikes(request):
     bookprice2 = request.POST['delbookprice']
     Likes.objects.filter(userid=bookuserid2,novel_title=booktitlelike2,novel_image=booklikeimage2,book_price=bookprice2).delete()
 
+<<<<<<< Updated upstream
+    messeage2 = '좋아요가 취소되었습니다'
+=======
     messeage2 = '이 책 이제 안좋아요...'
+>>>>>>> Stashed changes
     result2 = {'result2': messeage2}
     result2 = (json.dumps(result2, cls=NumpyEncoder, indent=4, ensure_ascii=False))
     return JsonResponse(result2,safe=False)

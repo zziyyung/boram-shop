@@ -1,70 +1,186 @@
-<style>
-    @font-face {
-        font-family: 'SCD2';
-        src:url('../fonts/SCDream3/SCDream2.otf') format('truetype');
-    }
+/* -------------------signup.html------------------------------- */
+@font-face {font-family: 'SCD1'; src:url('../fonts/SCDream3/SCDream1.otf') format('truetype'); }
+@font-face {font-family: 'SCD2'; src:url('../fonts/SCDream3/SCDream2.otf') format('truetype'); }
+@font-face {font-family: 'SCD3'; src:url('../fonts/SCDream3/SCDream3.otf') format('truetype'); }
+@font-face {font-family: 'SCD4'; src:url('../fonts/SCDream3/SCDream4.otf') format('truetype'); }
+@font-face {font-family: 'SCD5'; src:url('../fonts/SCDream3/SCDream5.otf') format('truetype'); }
+@font-face {font-family: 'SCD6'; src:url('../fonts/SCDream3/SCDream6.otf') format('truetype'); }
+@font-face {font-family: 'SCD7'; src:url('../fonts/SCDream3/SCDream7.otf') format('truetype'); }
+@font-face {font-family: 'SCD8'; src:url('../fonts/SCDream3/SCDream8.otf') format('truetype'); }
 
-    @font-face {
-        font-family: 'SCD5';
-        src:url('../fonts/SCDream3/SCDream5.otf') format('truetype');
-    }
+*{
+    margin:0;
+    padding:0;
+}
 
-    @font-face {
-        font-family: 'SCD7';
-        src:url('../fonts/SCDream3/SCDream7.otf') format('truetype');
-    }
+/* page_head */
 
-    .TopLogo{
-        position: absolute;
+.TopLogo{
+    display: inline;
+    float: left;
+    top: 28px;
+    left: 950px;
+    position: relative;
+}
 
-        left: 50%;
-        width: 150px;
-        height: 150px;
-        margin-left: -75px;
-    }
+#signup_title{
+    position: relative;
+    font-size: 50px;
+    top: 35px;
+    left: 970px;
+    color: #1E9EFF;
+    font-family: SCD8;
+    /* box-shadow: 2px 2px 5px lightblue; */
+}
 
-    #signup{
-        position: absolute;
-        left: 50%;
-        top: 225px;
-        border: double navy;
-        width: 600px;
-        height: 800px;
-        padding: 10px;
-        padding-bottom: 30px;
-        margin-left: -300px;
-    }
 
-    #form_text{
-        text-align: center;
-    }
+/* page_body */
+#signup_page_body{
+    background-color: #EBF6FF;
+    width: 100%;
+    margin-top: 50px;
+    height: 1150px;
+}
 
-    header{
-        width: 100%;
-        background-color: rgba(31, 158, 255, 1);
-    }
+#signup_body{
+    position:absolute;
+    background-color: white;    
+    width: 900px; height: 930px; left:680px;
+    top: 200px;
+    border: 1px solid rgb(214, 222, 235);
+    box-shadow: 10px 10px 10px grey;
+    border-radius: 10px;
+    font-family: SCD5;
+}
 
-    #signup_body{
-        font-family: SCD5;
-    }
-    #agree{
-        text-align: center;
-        margin:0 auto;
-    }
-    .checkbox_group{
-        text-align: left;
-        background: grey;
-        width: 600px;
-        color: white;
-        border-style: solid;
-        border-width: 2px;
-        border-color: red;
-        padding-top: 10px;
-        padding-bottom: 20px;
-        font-family: SCD7;
-    }
-    #page_foot{
-        font-family: SCD2;
-        text-align: center;
-    }
-</style>
+
+
+
+
+#form_text{
+    text-align: center;
+    top: 25px;
+    font-family: SCD7;
+    font-size: 30px;
+    margin-top: 25px;
+}
+
+
+#form1,#form2,#form3,#form4{
+    /* border:1px solid rgba(240, 189, 65); */
+    position: relative; width: 600px;
+}
+
+#form1{ top:60px; height: 220px; left: 40px; }
+
+#form_id, #form_name, #form_pw, #form_pw2, #form_birthday, #form_gender, #userGender, #form_email, #form_phone{
+    font-family: SCD7;
+    font-size: 23px;
+    margin-right: 30px;
+    text-align: center;
+}
+
+
+#form1 div, #form2 div{
+    position: relative;
+    width: 600px; height: 60px; left:50px;
+    text-align: left;
+}
+
+#form1 div input, #form2 div input{
+    position: absolute;
+    width:440px; height: 35px; padding-left: 15px; 
+    left: 200px; top:-10px;
+    font-size: 20px;
+    text-align: center;
+}
+
+
+#form2{top: 20px; height: 330px; left: 40px;margin-top: 40px;}  
+#form2 select { position: absolute; left: 200px; top: -5px; width:50px; height: 30px; }
+
+
+#alert-success{ top: 29px; font-size: 13px; 
+    position: absolute;
+    width: 300px;
+    height: 30px;
+    padding-left: 15px;
+    left: 380px;
+    font-size: larger;
+    top: 290px;}
+
+#alert-danger{ top: 29px; font-size: 13px; 
+    position: absolute;
+    width: 300px;
+    height: 30px;
+    padding-left: 15px;
+    left: 380px;
+    font-size: larger;
+    top: 290px; }
+
+#form3 div{
+    left: 150px;
+}
+
+
+#private{
+    margin-top: 25px;
+}
+
+.checkbox_group{
+    text-align: center;
+    width: 600px; height: 180px;
+    color: black;
+    margin-left: 145px;
+    margin-bottom: 10px;
+    border: 2px solid lightslategray;
+    font-family: SCD5;
+}
+
+#check_all, #check_1, #check_2{
+    left:30px;
+    width: 20px;
+    height: 20px;
+    margin-top: 8px;
+    margin-right: 5px;
+}
+
+
+
+
+#form4 div{display: inline-block;
+position: relative;
+}
+
+#form4 div input{ 
+    margin-top: 20px;
+    width:130px; height: 50px; 
+    border: none; border-radius: 5px;
+}
+ 
+#form_submit input{ 
+    background-color: rgb(135,206,250);
+    text-align: center;
+    font-family: SCD7;
+    margin-left: 300px;
+
+}
+
+#form_submit input:hover{ background-color: #1E9EFF;
+color: white;}
+#form_cancle input{ margin-left: 20px;font-family: SCD7;}
+#form_cancle input:hover { margin-left: 20px; background-color: rgba(177,177,177,0.5);
+    font-family: SCD7;}
+    
+
+/* page_foot */
+
+#page_foot{
+    position:relative;
+    background-color: #EBF6FF;
+    width: 100%;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center; 
+    color:grey; 
+}

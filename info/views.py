@@ -63,10 +63,12 @@ def booksearch(request):
     else:
         R = Review.objects.all().values()
         Reviews = pd.DataFrame(R)
-
-        ChoiceBookTotal = NovelTotal[NovelTotal['title'] == booktitle]
-        ChoiceBookStory = NovelStory[NovelStory['title'] == booktitle]
-
+        if (NovelTotal[NovelTotal['title']==booktitle]['title'].count()) > 1:
+            ChoiceBookTotal = (NovelTotal[NovelTotal['title'] == booktitle]).head(1)
+            ChoiceBookStory = (NovelStory[NovelStory['title'] == booktitle]).head(1)
+        else:
+            ChoiceBookTotal = NovelTotal[NovelTotal['title'] == booktitle]
+            ChoiceBookStory = NovelStory[NovelStory['title'] == booktitle]
         CBTcover = ChoiceBookTotal['coverlargeurl'].iloc[0]
         CBTtitle = ChoiceBookTotal['title'].iloc[0]
         CBTauthor = ChoiceBookTotal['author'].iloc[0]
@@ -77,13 +79,17 @@ def booksearch(request):
         CBSreview = ChoiceBookStory['review'].iloc[0]
         CBSpiece = ChoiceBookStory['piece'].iloc[0]
 
-        ChoiceBookReview = Reviews[Reviews['booktitle'] == booktitle]
+        if (Reviews[Reviews['booktitle'] == booktitle]['booktitle'].count()) >1:
+            ChoiceBookReview = Reviews[Reviews['booktitle'] == booktitle].head(1)
+        else:
+            ChoiceBookReview = Reviews[Reviews['booktitle'] == booktitle]
         CBId = list(ChoiceBookReview['userid'])
+        CBRating = list(ChoiceBookReview['rating'])
         CBReview = list(ChoiceBookReview['review'])
         CBDate = list(ChoiceBookReview['timeday'])
-        CBall = zip(CBId, CBReview, CBDate)
+        CBall = zip(CBId,CBRating, CBReview, CBDate)
 
-        # 유튜브 api 재료 및 실행
+        # 유튜브 api 재료 및 실행ss
         CBTid = ChoiceBookTotal['id'].iloc[0]
         CBTid = str(CBTid)
 
@@ -96,6 +102,7 @@ def booksearch(request):
         songtrackname = list()
         for i in listnoveltosing[:4]:
             i = int(i)
+            i +=1
             musicid = SongChart[SongChart['id'] == i]
             musicsinger = musicid['singer'].iloc[0]
             # print(musicsinger,'singer')
@@ -118,9 +125,12 @@ def booksearch(request):
         colorlist = list()
         for a in Ncolor:
             a = int(a)
+            a +=1
             color = Color[Color['id'] == a]
             rgb = color['rgb'].iloc[0]
             colorlist.append(rgb)
+
+        colorthis = colorlist[0:10]
 
         colordefault = colorlist[0]
 
@@ -133,14 +143,14 @@ def booksearch(request):
                            'CBTcover': CBTcover, 'CBTtitle': CBTtitle, 'CBTauthor': CBTauthor,
                            'CBTpublisher': CBTpublisher, 'CBTprice': CBTprice, 'CBSstory': CBSstory,
                            'CBSreview': CBSreview, 'CBSpiece': CBSpiece, 'list': CBall, 'colorde': colordefault,
-                           'colorlist': colorlist, 'playlist': playlist, 'musicdefault': youtubedefault})
+                           'colorlist': colorthis, 'playlist': playlist, 'musicdefault': youtubedefault})
         else:
             return render(request, 'booksearch.html',
                           {'ChoiceBookTotal': ChoiceBookTotal, 'ChoiceBookStory': ChoiceBookStory, 'CBTcover': CBTcover,
                            'CBTtitle': CBTtitle, 'CBTauthor': CBTauthor, 'CBTpublisher': CBTpublisher,
                            'CBTprice': CBTprice, 'CBSstory': CBSstory, 'CBSreview': CBSreview, 'CBSpiece': CBSpiece,
-                           'colorde': colordefault, 'colorlist': colorlist, 'playlist': playlist,
-                           'musicdefault': youtubedefault})  # ,'playlist':playlist,'musicdefault':youtubedefault})
+                           'colorde': colordefault, 'colorlist': colorthis, 'playlist': playlist,
+                           'musicdefault': youtubedefault})
 
 # 도서 리뷰
 @csrf_exempt
@@ -156,8 +166,11 @@ def insertreview(request):
 
 # 유튜브api로 노래 불러오기
 def youtube_search(option):
-    DEVELOPER_KEY = "AIzaSyCWNfSQc4K4lFo7jnpMBFgQYpXNsfRDpDo"
-    # DEVELOPER_KEY = 'AIzaSyCrmFLOeyOsWrtV230eeno_gxVVJzcSr6s'
+    # DEVELOPER_KEY = "AIzaSyCWNfSQc4K4lFo7jnpMBFgQYpXNsfRDpDo"
+    # DEVELOPER_KEY ="AIzaSyB82I9gRsNvJIU1skMFtAzEq4nIeym4ZWo"
+    # DEVELOPER_KEY ="AIzaSyCPvPcHmyPAFS4TcjpPaCkPEclZGtFRDOA"안댐
+    # DEVELOPER_KEY = 'AIzaSyCrmFLOeyOsWrtV230eeno_gxVVJzcSr6s'안댐
+    DEVELOPER_KEY = 'AIzaSyAWcKzQNoHzCG3jmI94rQuzs5DX1cv1YmI'
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
     videoaddres = []
@@ -206,7 +219,7 @@ def insertmatchreview(request):
         rating2 = request.POST['matchrating']
         review2 = request.POST['matchreview']
         Matchreview.objects.create(userid=userid4,booktitle=booktitle4,rating=rating2,matchreview=review2,timeday=timezone.now().date())
-        messeage = '평가 감사합니다!'
+        messeage = '평가해주셔서 감사합니다!'
         result = {'result': messeage}
         result = (json.dumps(result, cls=NumpyEncoder, indent=4, ensure_ascii=False))
     return JsonResponse(result, safe=False)

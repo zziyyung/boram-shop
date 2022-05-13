@@ -6,7 +6,7 @@
     <title>감성서점</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/change.css' %}">
     <style>
-        
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type= text/javascript>
@@ -38,24 +38,28 @@
 
 <body>
 <body>
-    <!-- 상단바 -->
-    <div class="TopLogo">
+    <!-- page_head -->
+    <div class="ChangeLogo">
         <a href="{% url 'index' %}">
-            <img src="{% static 'images/b3_logo.png' %}">
+            <img src="{% static 'images/b3_logo.png' %}" id="logo_pic">
         </a>
+        <a id="change_title">보람서점</a>
     </div>
-
-    <div id="page_head">
-        <div id="head_logo"></div>
-        <div id="head_title">
-            <div id="head_signup">
-                {% if not request.session.username %}
-                    <a href="{% url 'signup' %}"><span> 회원가입 </span></a>
-                    <a href="{% url 'login' %}"><span> 로그인 </span></a>
-                {% else %}
-                    <a href="{% url 'logout' %}"><span id="logout_text"> 로그아웃 </span></a>
-                {% endif %}
-            </div>
+    <div id="head_signup">
+        {% if not request.session.username %}
+        <div id="head_signup2">
+            <a href="{% url 'signup' %}" id="signup"><span> 회원가입 </span></a>
+            <a href="{% url 'login' %}" id="login"><span> 로그인 </span></a>
+            <a href="{% url 'customer' %}"id='center'><span>고객센터</span></a>
+        {% else %}
+            {% if request.session.username == userinfo.userid %}
+                <a id="username">{{userinfo.userName}}</a>
+                <a href="{% url 'logout' %}"><span id="logout"> 로그아웃 </span></a>
+                <a href="{% url 'mypage' %}">
+                    <img src="{% static 'images/customer.png' %}" width=50px height=50px id="mp_icon">
+                </a>
+            {% endif %}
+        {% endif %}
         </div>
     </div>
 
@@ -95,5 +99,15 @@
             </form>
         </div>
     </div>
+
+    <!-- page_foot -->
+    <div id="page_foot">
+        <div id="foot_logo"></div>
+        <div id="companyinfo">
+            <p id="company_address">(주) 보람상조 | 서울특별시 강남구 언주로 508 4층(역삼동, 서울상록빌딩)</p>
+            <p id="copyright">Copyright by BoramBooks Co., Ltd. All rights reserved.</p>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -3,9 +3,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>감성서점</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}"> 
+    <title>보람서점</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
 
     <!-- 개인정보 팝업창 css -->
     <style>
@@ -70,23 +71,24 @@
         });
     </script>
 
-    
+
 
 </head>
 <body onload="uncheck()">
     <!-- 상단바 -->
     <!-- css에서 잡아주세요 -->
-    <header class="header">
-        <h4>로고 상단바</h4>
-    </header>
-    <a class="TopLogo" href="{% url 'index' %}">
-        <img src="{% static 'images/b3_logo.png' %}">
-    </a>
+    <div id="signup_head">
+        <a class="TopLogo" href="{% url 'index' %}">
+            <img src="{% static 'images/b3_logo.png' %}" width=80px height=80px>
+        </a>
+        <a id="signup_title" >보람서점</a>
+    </div>
+
 
     <!-- 회원가입 화면 -->
     <div id="signup_page_body">
         <div id="signup_body">
-            <form action="{% url 'signup' %}" method="post">{% csrf_token %}
+            <form action="{% url 'signup' %}" method="post" id="fornewperson">{% csrf_token %}
 
                 <div id="form_text">  회  원  가  입  </div>
 
@@ -95,39 +97,39 @@
                     <div id="form_pw"> 비밀번호 <input type="password" id='user_pw' name="userPW1"></input></div>
                     <div id="form_pw2"> 비밀번호 재확인 <input type="password", id='user_pw2' class="pw"></div>
                 </div>
-                
+
                 <div id="alert">
-                    <div class="alert alert-success" id="alert-success" style="color: green;">비밀번호가 일치합니다.</div> 
+                    <div class="alert alert-success" id="alert-success" style="color: green;">비밀번호가 일치합니다.</div>
                     <div class="alert alert-danger" id="alert-danger" style="color: red;">비밀번호가 일치하지 않습니다.</div>
                 </div>
-                
+
                 <div id="form2">
                     <div id="form_name">이 름<input type="text" name="userName" id="user_name1"></div>
-                    <div id="form_birthday">생년월일<input type="text" name = 'userbirthDay' id="user_birthday" placeholder="YYYYMMDD"></div>
-                    <div id="form_gender"> 
+                    <div id="form_birthday">생년월일<input type="date" name = 'userbirthDay' id="user_birthday" placeholder="YYYY/MM/DD"></div>
+                    <div id="form_gender">
                         성 별
                         <select name="userGender">
                             <option value="남">남</option>
                             <option value="여">여</option>
                         </select></div>
-                    <div id="form_email">이메일<input type="text" id="user_email" name="userEmail" placeholder="leenodam@nodam.com" ></div>
-                    <div id="form_phone">휴대전화<input type="text" id='user_phone' name ='userPhone' placeholder="01012345678"></div>
+                    <div id="form_email">이메일<input type="text" id="user_email" name="userEmail" placeholder="leenovelm@boram.com" ></div>
+                    <div id="form_phone">휴대전화<input type="text" id='user_phone' name ='userPhone' placeholder="010-1234-5678"></div>
 
                 </div>
 
                 <div id="form3">
                     <div class="checkbox_group">
-                        <p>개인정보동의서</p>
+                        <p id="private">개인정보동의서</p>
                       <input type="checkbox" id="check_all" onchange='handleChange(this);'>
                       <label for="check_all">전체 동의</label>
                       <br>
                       <input type="checkbox" id="check_1" class="normal" >
-                        <label for="check_1"><b>(필수)</b> 개인정보 처리방침 동의</label> <a href="javascript:openPop1()" style="color: navy; cursor:pointer"><b>개인정보 처리방침 확인하기</b></a>
+                        <label for="check_1"><b>(필수)</b> 개인정보 처리방침 동의</label> <a href="javascript:openPop1()" style="color: lightslategray; cursor:pointer"><b>개인정보 처리방침 확인하기</b></a>
                       <br>
                       <input type="checkbox" id="check_2" class="normal" >
-                      <label for="check_2"><b>(필수)</b> 서비스 이용약관 동의</label> <a href="javascript:openPop2()" style="color: navy; cursor:pointer"><b>서비스 이용약관 확인하기</b></a>
+                      <label for="check_2"><b>(필수)</b> 서비스 이용약관 동의</label> <a href="javascript:openPop2()" style="color: lightslategray; cursor:pointer"><b>서비스 이용약관 확인하기</b></a>
                     </div>
-                    
+
                 </div>
 
                 <div id="form4">
@@ -136,13 +138,13 @@
                 </div>
             </form>
         </div>
-    </div> 
+    </div>
 
     <div id="page_foot">
         <div id="foot_logo"></div>
         <div id="companyinfo">
-            <p id="company_address">3조</p>
-            <p id="copyright">Copyright by Multicoding Co., Ltd. All rights reserved.</p>
+            <p id="company_address">(주) 보람상조 | 서울특별시 강남구 언주로 508 4층(역삼동, 서울상록빌딩)</p>
+            <p id="copyright">Copyright by BoramBooks Co., Ltd. All rights reserved.</p>
         </div>
     </div>
 
@@ -190,7 +192,7 @@
             <div class="popup_cont">
                 <h5> 서비스 이용약관 </h5>
                 <p>
-                        본 감성 이용약관(이하 ‘본 약관’이라 함)은<br>본 서비스를 이용하는 고객(이하 ‘고객’이라 함)에게 제공하는 모든 제품<br> 및 서비스(이하 ‘본 서비스’라 함)의 이용에 관한 조건에 대해 정합니다.<br>
+                        본 보람서점 이용약관(이하 ‘본 약관’이라 함)은<br>본 서비스를 이용하는 고객(이하 ‘고객’이라 함)에게 제공하는 모든 제품<br> 및 서비스(이하 ‘본 서비스’라 함)의 이용에 관한 조건에 대해 정합니다.<br>
 
                         1. 정의<br>
                         본 약관에서 사용하는 용어의 정의는 다음과 같습니다.<br>
@@ -207,22 +209,22 @@
                         2.3.본 서비스에 적용되는 개별 이용약관이 존재할 경우, 고객은 본 약관 외에 개별 이용약관의 규정에 따라 본 서비스를 이용해야 합니다.<br>
 
                         3. 약관 변경<br>
-                        감성이 필요하다고 판단할 경우, 감성은 본 서비스 목적의 범위 내에서 본 약관을 변경할 수 있습니다.<br> 이때 감성은 본 약관의 변경본의 내용과 변경의 효력일을 본 서비스 또는 감성의 웹사이트에 게시하거나,<br> 이를 감성이 정한 방법으로 고객에게 통지하여야 합니다.<br>
+                        보람서점이 필요하다고 판단할 경우, 보람서점은 본 서비스 목적의 범위 내에서 본 약관을 변경할 수 있습니다.<br> 이때 보람서점은 본 약관의 변경본의 내용과 변경의 효력일을 본 서비스 또는 보람서점의 웹사이트에 게시하거나,<br> 이를 감성이 정한 방법으로 고객에게 통지하여야 합니다.<br>
                         본 약관의 변경본은 그 효력일로부터 효력이 발생합니다.<br>
 
                         4. 계정<br>
                         4.1.본 서비스 이용을 위해 고객은 특정 정보를 등록하여 계정을 생성해야 할 수 있습니다.<br>고객은 진실하고 정확하며 완전한 정보를 등록해야 하며 언제나 최신 정보가 적용되도록 수정해야 합니다.<br>
                         4.2.고객이 본 서비스 이용을 위해 인증 정보를 등록할 경우,<br> 이를 부정하게 이용당하지 않도록 본인 책임 하에 엄중하게 관리해야 합니다.<br> 감성은 등록된 인증 정보를 이용하여 이루어진 일체의 행위를 인증 정보를 등록한 고객 본인의 행위로 간주할 수 있습니다.<br>
                         4.3.본 서비스에 등록한 고객은 언제라도 계정을 삭제하고 탈퇴할 수 있습니다.<br>
-                        4.4.감성은 마지막 접속 시점부터 １년 이상 경과한 계정을 해당 고객에 대한 사전 통지 없이 삭제할 수 있습니다.<br>
+                        4.4.보람서점은 마지막 접속 시점부터 １년 이상 경과한 계정을 해당 고객에 대한 사전 통지 없이 삭제할 수 있습니다.<br>
                         4.5.고객이 본 서비스에서 가지는 모든 이용 권한은 이유를 막론하고 계정이 삭제된 시점에 소멸됩니다.<br>고객의 실수로 계정을 삭제한 경우에도 계정을 복구할 수 없음에 유의하시기 바랍니다.<br>
                         4.6.본 서비스의 계정은 고객에게 일신전속적으로 귀속됩니다.<br>고객이 본 서비스에서 가지는 모든 이용권은 제삼자에게 양도, 대여 또는 처분할 수 없으며, 제삼자에게 상속 또는 승계될 수 없습니다.<br>
 
                         5. 프라이버시<br>
-                        5.1.감성은 고객의 프라이버시를 존중합니다.<br>
-                        5.2.감성은 고객의 프라이버시 정보와 개인정보를 LINE 개인정보 취급방침에 따라 적절하게 취급합니다.<br>
-                        5.3.감성은 고객으로부터 수집한 모든 정보를 안전하게 관리하기 위해 보안에 최대한 주의를 기울이고 있습니다.<br>
-                                
+                        5.1.보람서점은 고객의 프라이버시를 존중합니다.<br>
+                        5.2.보람서점은 고객의 프라이버시 정보와 개인정보를 LINE 개인정보 취급방침에 따라 적절하게 취급합니다.<br>
+                        5.3.보람서점은 고객으로부터 수집한 모든 정보를 안전하게 관리하기 위해 보안에 최대한 주의를 기울이고 있습니다.<br>
+
                     </p>
             </div>
             <!--팝업 버튼 영역-->

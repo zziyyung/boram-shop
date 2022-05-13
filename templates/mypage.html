@@ -5,17 +5,12 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>감성서점</title>
+    <title>보람서점</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/mypage.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
 
-    <style>
-        #likelistsize {
-            padding : 20px;
-            margin : 20px;
-            float : left;
-        }
-    </style>
+
 
     <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
 
@@ -36,38 +31,71 @@
 </head>
 <body>
     <!-- 상단바 -->
-    <div class="TopLogo">
-        <a href="{% url 'index' %}">
-            <img src="{% static 'images/b3_logo.png' %}">
-        </a>
-    </div>
-    <h1>My Page</h1>
-    {% if request.session.username == userinfo.userid %}
-        <div class="bar">
-            <div class="id">{{userinfo.userid}} 님의 마이 페이지</div>
+    <div class="page_head">
+        <div id="TopLogo" onclick="location.href='/'">
+            <img src="{% static 'images/b3_logo.png' %}" width=80px height=80px>
+        </div>
+        <div id="head_signup">
+            <a id="title">보람서점</a>
+            {% if not request.session.username %}
+            <div id="head_signup2">
+                <a href="{% url 'signup' %}" id="signup"><span> 회원가입 </span></a>
+                <a href="{% url 'login' %}" id="login"><span> 로그인 </span></a>
+                <a href="{% url 'customer' %}"id='center'><span>고객센터</span></a>
+            {% else %}
+                {% if request.session.username == userinfo.userid %}
+                    <a id="username">{{userinfo.username}}</a>
+                    <a style="color: black; top:40px; font-size: 22px; position: relative; left:1300px;">님 환영합니다.</a>
+                    <a href="{% url 'logout' %}" id="logout"><span> 로그아웃 </span></a>
+                    <a href="{% url 'customer' %}"id='center' style="position: relative;top:40px;left:850px;"><span>고객센터</span></a>
+                    <a href="{% url 'mypage' %}" id="mp_icon">
+                        <img src="{% static 'images/customer.png' %}" style="width:50px; height:50px;">
+                    </a>
+                {% endif %}
+            {% endif %}
             <div class="option">
                 <a href="{% url 'change' %}">내 정보 수정</a>
             </div>
+            </div>
         </div>
-    {% endif %}
+    </div>
+
+    <!-- page_body -->
+    <div id="body1">
+        <div id="image_dark"></div>
+        {% if request.session.username == userinfo.userid %}
+            <div class="bar">
+                <div class="id">{{userinfo.userid}} 님의 My Page</div>
+            </div>
+        {% endif %}
+    </div>
+
 
     <!-- 찜하기 내용 -->
-    <div id="forlikes"><a>찜 하기 목록</a>
+    <div id="forlikes"><a id="jjim">찜 하기 목록</a>
         {% if liketable %}
             <form method="post" action="/booksearch/"  id="fromimage">
             {% for a,b,c in liketable %}
                 <div id="likelistsize" value="{{ b }}" onclick="findthis('{{b}}')">
                     <img id="deleimage" value="{{ a }}" src="{{ a }}"></br>
                     <text id="delltitle" value="{{ b }}">{{ b }}</text></br>
-                    <text>가격 : </text>
-                    <text id="delprice" value="{{ c }}">{{ c }}</text>
+                    <div class="price">
+                        <text class="price">가격 : </text>
+                        <text id="delprice" value="{{ c }}">{{ c }}</text>
+                        <text class="price">원</text>
+                    </div>
                 </div>
             {% endfor %}
                 <input type="text" name="booktitle" id="booktitle" style="display: none;">
             </form>
         {% else %}
-            <div>아직 좋아하시는게 없는걸까요 ㅠㅠ</div>
+            <div style="margin-left: 80px; margin-top:25px; font-size:25px; font-family:SCD4;">아직 좋아하는 책이 없습니다</div>
         {% endif %}
+    </div>
+
+    <div id="page_foot">
+        <p id="company_address">(주) 보람상조 | 서울특별시 강남구 언주로 508 14층(역삼동, 서울상록빌딩)</p>
+        <p id = "copyright">Copyright by BoramBooks Co., Ltd. All rights reserved.</p>
     </div>
 
 </body>

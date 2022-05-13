@@ -3,48 +3,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>감성서점</title>
+    <title>보람서점 고객센터</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/customer.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="shortcut icon" href="{% static 'images/icon.png' %}">
     <script>
         $(function(){
             $(".question").click(function(){
-                $(this).next().slideDown()
+                $(this).next().slideToggle()
                 $(this).parent().siblings().find("div.answer").slideUp()
             })
         })
     </script>
+    <style>
+    </style>
 </head>
 <body>
     <!-- page_head -->
-    <div class="TopLogo">
+    <div class="CustomerLogo">
         <a href="{% url 'index' %}">
-            <img src="{% static 'images/b3_logo.png' %}">
+            <img src="{% static 'images/b3_logo.png' %}" id="logo_pic">
         </a>
+        <a id="customer_title">보람서점</a>
     </div>
     <div id="head_signup">
+        <form method="post" action="/booksearch/"  id="fromimage">
         {% if not request.session.username %}
-            <a href="{% url 'signup' %}"><span> 회원가입 </span></a>
-            <a href="{% url 'login' %}"><span> 로그인 </span></a>
+        <input type="text" id="search" name="booktitle" placeholder="감성을 담은 온라인 서점, 보람서점" required>
+            <input type="submit" value="검색" id="search2">
+            <div id="head_signup2">
+                <a href="{% url 'signup' %}" id="signup"><span> 회원가입 </span></a>
+                <a href="{% url 'login' %}" id="login"><span> 로그인 </span></a>
+                <a href="{% url 'customer' %}"id='center'><span>고객센터</span></a>
         {% else %}
             {% if request.session.username == userinfo.userid %}
-                <a id="username">{{userinfo.userName}}</a>
-                <a href="{% url 'logout' %}"><span id="logout"> 로그아웃 </span></a>
-                <a href="{% url 'mypage' %}">
-                    <img src="{% static 'images/customer.png' %}" width=50px height=50px>
-                </a>
+            <input type="text" id="search" name="booktitle" placeholder="감성을 담은 온라인 서점, 보람서점" required>
+                <input type="submit" value="검색" id="search2">
+                    <a id="username">{{userinfo.username}}</a>
+                    <a style="color: black; top:40px; font-size: 22px; position: relative; left:990px;">님 환영합니다.</a>
+                    <a href="{% url 'logout' %}" id="logout"><span> 로그아웃 </span></a>
+
+                    <a href="{% url 'mypage' %}" id="mp_icon">
+                        <img src="{% static 'images/customer.png' %}" style="width:50px; height:50px;">
+                    </a>
             {% endif %}
         {% endif %}
+        </div>
+        </form>
     </div>
 
     <!-- page_body -->
     <div id="page_body">
         <main role="main">  <!-- 문서의 주요한 내용을 담는 태그 -->
             <div id="body1">
+                <div id="image_dark"></div>
                 <div class="top">
-                    <p id="tittle">무엇을 도와드릴까요?</p>
-                    <p> 감성은 늘 고객들의 문의를 듣고,</p>
+                    <p id="intro">#보람서점 고객센터</p>
+                    <p>무엇을 도와드릴까요?</p>
+                    <p> 보람서점은 늘 고객들의 문의를 듣고,</p>
                     <p> 신속하게 조치하려고 노력하고 있습니다.</p>
+                    <!-- <img src="{% static 'images/customer_pic.png' %}" id="customer_pic"> -->
                 </div>
             </div>
             <br>
@@ -52,39 +70,41 @@
 
             <div id="body2">
                 <div id="notice">
-                    <div id="title"> <a><a>감성서비스의 </a><a id="new_title">신규</a> 및 <a id="update_title">업데이트 소식</a>을 알려드립니다!</a></div>
+                    <div class="title"> <a><a>보람서점 서비스의</a><a id="new_title"> 신규</a> 및 <a id="update_title"> 업데이트 소식</a>을 알려드립니다!</a></div>
                     <ul>
                         <li>
                             <div class="question" id="q_sub">
                                 <em class="num">1</em>
-                                <p class="content">[설명] 감성은 이런 서비스입니다</p>
+                                <p class="content">[설명] 보람서점은 이런 서비스입니다</p>
                             </div>
                             <div class="answer" id="a_sub">
                                 <p> 위대한 소설은 한 사람의 인생을 경험하는 것과 같다고 합니다. </p>
-                                <p> 책을 읽고 남겨진 그 여운을 오랫동안 유지하기 위해, </p>
-                                <p> 그 기억을 오래 보존하기 위해 알맞은 노래가 적격이라고 합니다. </p>
-                                <p> 감성은 보다 생생하고 오래가는 체험을 위해, </p>
-                                <p> 음악 스트리밍 서비스와 융합된 온라인 서점 플랫폼입니다. </p>
+                                <p> 책을 읽고 남겨진 여운을 오랫동안 유지하기 위해, </p>
+                                <p> 알맞은 노래가 적격이라고 합니다. </p>
+                                <p> 나아가 보다 생생하고 오래가는 체험을 위해, </p>
+                                <p> 저희는 음악과 감성적인 배색을 더한</p>
+                                <p> 온라인 감성 서점 플랫폼입니다. </p>
                             </div>
                         </li>
                         <li>
                             <div class="question" id="q_sub">
                                 <em class="num">2</em>
-                                <p class="content">[공지] 결제 서비스 준비중 안내</p>
+                                <p class="content">[공지] 결제 서비스 </p>
                             </div>
                             <div class="answer" id="a_sub">
-                                <p>현재는 준비중입니다.</p>
-                                <p>카드결제는 물론이고 카카오페이/네이버페이, 문화상품권 결제도 준비 예정입니다.</p>
+                                <p>현재는 카카오 페이로 결제가 구성되어있습니다.</p>
+                                <p>추후 네이버페이, 문화상품권 결제도 준비 예정입니다.</p>
                             </div>
                         </li>
                         <li>
                             <div class="question" id="q_sub">
                                 <em class="num">3</em>
-                                <p class="content">[공지] 좋아요 서비스 장애 안내</p>
+                                <p class="content">[공지] 구매 확인 서비스</p>
                             </div>
                             <div class="answer" id="a_sub">
                                 <p>현재는 준비중입니다.</p>
-                                <p>여러분이 좋아하신 책들을 나만의 서재에다 고이고이 모실 수 있을 겁니다.</p>
+                                <p>결제 내역은 현재로서는 결제 당시에 카카오로 알람이 가는것이 전부입니다.</p>
+                                <p>추후 페이지를 개설하여 웹에서도 쉽게 확인 가능하게끔 하겠습니다.</p>
                             </div>
                         </li>
                     </ul>
@@ -100,7 +120,9 @@
                             <div class="answer">
                                 <p>현재는 준비중입니다.</p>
                                 <p>현재로선 컴퓨터 웹서비스로 개발 중이며</p>
-                                <p>추후에 모바일로도 출고할 예정입니다.</p>
+                                <p>추후에 모바일로도 출시할 예정입니다.</p>
+                                <p>앞으로도 다양한 즐거움을 드릴 수 있도록 더욱 최선을 다하는 보람서점이 되겠습니다.</p>
+                                <p>감사합니다. </p>
                             </div>
                         </li>
                         <li>
@@ -110,7 +132,9 @@
                             </div>
                             <div class="answer">
                                 <p>현재는 준비중입니다.</p>
-                                <p>하게 되면 제목과 작가별로 도서를 분류할 수 있을 겁니다.</p>
+                                <p>제목과 작가별,장르별로 도서를 분류하게 할예정입니다.</p>
+                                <p>세세한 분류로 좀 더 고객님의 요구에 맞추도록 준비중입니다.</p>
+                                <p>보다 나은 서비스를 위해 항상 노력하겠습니다.</p>
                             </div>
                         </li>
                         <li>
@@ -119,8 +143,11 @@
                                 <p class="content">[제휴] 온라인 스트리밍 서비스는 어떻게 되나요?</p>
                             </div>
                             <div class="answer">
-                                <p>현재는 준비중입니다.</p>
-                                <p>현재 멜론 혹은 스포티파이와 제휴를 맺을 예정입니다.</p>
+                                <p>현재 저희는 youtube로 스트리밍을 제공하고 있습니다.</p>
+                                <p>더 좋은 서비스를 제공하기 위해 youtube와 편의적인 기능과 </p>
+                                <p>다양한 제휴 서비스를 준비중입니다.</p>
+                                <p>앞으로도 다양한 즐거움을 드릴 수 있도록 더욱 최선을 다하는 보람서점이 되겠습니다.</p>
+                                <p>감사합니다. </p>
                             </div>
                         </li>
                     </ul>
@@ -129,17 +156,14 @@
         </main>
     </div>
 
-    <br>
-    <footer class="footer">
-        <h4>저작권</h4>
-            <div id="login_page_foot">
+
+    <div id="page_foot">
         <div id="foot_logo"></div>
         <div id="companyinfo">
-            <p id="company_address">3조</p>
-            <p id="copyright">Copyright by Multicoding Co., Ltd. All rights reserved.</p>
+            <p id="company_address">(주) 보람상조 | 서울특별시 강남구 언주로 508 4층(역삼동, 서울상록빌딩)</p>
+            <p id="copyright">Copyright by BoramBooks Co., Ltd. All rights reserved.</p>
         </div>
     </div>
-    </footer>
 
 </body>
 </html>

@@ -1,0 +1,240 @@
+/* -------------------mypage.html------------------------------- */
+@font-face {font-family: 'SCD1'; src:url('../fonts/SCDream3/SCDream1.otf') format('truetype'); }
+@font-face {font-family: 'SCD2'; src:url('../fonts/SCDream3/SCDream2.otf') format('truetype'); }
+@font-face {font-family: 'SCD3'; src:url('../fonts/SCDream3/SCDream3.otf') format('truetype'); }
+@font-face {font-family: 'SCD4'; src:url('../fonts/SCDream3/SCDream4.otf') format('truetype'); }
+@font-face {font-family: 'SCD5'; src:url('../fonts/SCDream3/SCDream5.otf') format('truetype'); }
+@font-face {font-family: 'SCD6'; src:url('../fonts/SCDream3/SCDream6.otf') format('truetype'); }
+@font-face {font-family: 'SCD7'; src:url('../fonts/SCDream3/SCDream7.otf') format('truetype'); }
+@font-face {font-family: 'SCD8'; src:url('../fonts/SCDream3/SCDream8.otf') format('truetype'); }
+
+*{
+    margin:0;
+    padding:0;
+}
+
+/* page_head */
+.page_head{
+    border-radius: 30px;
+    border-bottom: 5px;
+}
+
+#TopLogo{
+    float: left;
+    padding-left: 80px;
+    display: inline;
+    float: left;
+    top: 50px;
+    position: relative;
+}
+#TopLogo:hover{
+    cursor: pointer;
+}
+#title{
+    position: relative;
+    font-size: 45px;
+    top: 60px;
+    left: 8px;
+    color: #1E9EFF;
+    font-family: SCD8;
+    margin-right: 15px;
+}
+
+
+#head_signup{
+    font-family: SCD3;
+    font-size: 12px;
+    /* text-align: right; */
+    height: 160px;
+    border-bottom: 2px solid #ebeeefc1;
+    font-family: SCD6;
+}
+
+
+#search{
+    width: 582px;
+    height: 52px;
+    padding-left:20px;
+
+    margin: 0;
+    font-size: 22px;
+    color: #212529;
+    border-color: #212529;
+    border-radius: 3px;
+    font-family: SCD6;
+    position: relative;
+    top: -10px;
+    left: 200px;
+}
+
+#search2{
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    width:100px; height: 55px;
+    border: none; border-radius: 5px;
+    background-color: rgb(135,206,250);
+    text-align: center;
+    font-family: SCD7;
+    position: relative;
+    top: -10px;
+    left: 200px;
+}
+#search2:hover{
+    background-color:rgb(0,191,255);
+    cursor: pointer;
+}
+
+
+#head_signup2{
+    height: 500px;
+
+}
+
+#center{
+    font-size: 20px;
+    position: relative;
+    top: 10px;
+    left: 1800px;
+    color: #787878;
+    font-family: SCD6;
+    margin: 10px;
+}
+
+#mp_icon{
+    position: relative;
+    left:1450px;
+    top: 50px;
+}
+
+#logout{
+    position: relative;
+    left:1350px;
+    font-size: 20px;
+    font-family: SCD6;
+    top: 40px;
+}
+#username{
+    color:black;
+    left:1300px;
+    position: relative;
+    font-size: 22px;
+    top:40px;
+}
+
+#body1{
+    margin-top: 30px;
+    height: 400px;
+    position: relative;
+    background-image: url('/static/images/customer_pic.png');
+}
+
+#image_dark{
+    background-color: #242424;
+    ; /*살짝 투명한 검정으로 배경색*/
+    opacity: 0.6;
+    width:100%; height:400px; position: absolute; /*다른 요소들 위로 겹쳐질 수 있게함*/
+}
+
+
+.id{
+    position: absolute;
+    text-align: center;
+    color: whitesmoke;
+    font-family: SCD5;
+    top: 155px;
+    left:950px;
+    font-size: 50px;
+    line-height: 150%;
+}
+
+.option{
+    position: absolute;
+    text-align: center;
+    color: whitesmoke;
+    font-family: SCD6;
+    top: 70px;
+    left:2050px;
+    font-size: 20px;
+}
+
+/* 찜하기 내용 */
+#forlikes{
+    position: relative;
+    margin-top: 40px;
+}
+
+#jjim{
+    font-size: 40px;
+    border-bottom: 2px solid lightslategray;
+    font-family: SCD6;
+    margin-left: 80px;
+    color: #1e7cff;
+}
+
+
+
+/* page_body */
+#likelistsize {
+    padding : 20px;
+    margin : 20px;
+    float : left;
+}
+
+#deleimage{
+    width: 250px;
+    height: 350px;
+    margin: 25px;
+    margin-bottom: 30px;
+}
+#deleimage:hover{
+    cursor:pointer;
+}
+
+#delltitle{
+    position: relative;
+    font-size: 25px;
+    font-family: SCD6;
+    text-align: center;
+    margin-top: 10px;
+    width: 250px;
+    left: 80px;
+}
+#delltitle:hover{
+    cursor:pointer;
+}
+
+.price{
+    margin-top: 10px;
+    width: 250px;
+    text-align: center;
+    font-size: 20px;
+    font-family: SCD5;
+    color: #787878;
+    margin: 5px;
+}
+.price:hover{
+    cursor:pointer;
+}
+
+#delprice{
+    position: relative;
+    font-size: 20px;
+    font-family: SCD5;
+    color: #787878;
+    width: 250px;
+}
+
+/* page_foot */
+#page_foot{
+    position:relative;
+    max-width: 90%;
+    top:800px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    color:grey;
+    left: -30px;
+    margin-left: -750px;
+    margin-bottom: 20px;
+}
