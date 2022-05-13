@@ -1,14 +1,8 @@
 from django.shortcuts import render,redirect
-<<<<<<< Updated upstream
-from boram3.models import Signup , Likes
-from django.contrib.auth.hashers import make_password
-import pandas as pd
-=======
 from boram3.models import Signup,Likes
 from django.contrib.auth.hashers import make_password
 import pandas as pd
 
->>>>>>> Stashed changes
 
 def mypage(request):
     L = Likes.objects.all().values()

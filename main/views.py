@@ -17,14 +17,14 @@ Review = pd.DataFrame(R)
 def index(request):
     newbooks = NovelTotal.sort_values(by=['pubdate'], ascending=False).head(5)
     Ntitlelist = list(newbooks['title'])
-    Nbookimage = list(newbooks['coversmallurl'])
     Nbookauthor = list(newbooks['author'])
+    Nbookimage = list(newbooks['coversmallurl'])
     newbooks5 = zip(Nbookimage,Ntitlelist,Nbookauthor)
     #신간리스트 타이틀은 Ntitle,북표지는 Nbookimage
     bestbooks = NovelTotal.head(10)
     Btitlelist = list(bestbooks['title'])
-    Bbookimage = list(bestbooks['coversmallurl'])
     Bbookauthor = list(bestbooks['author'])
+    Bbookimage = list(bestbooks['coversmallurl'])
     bestbooks10 = zip(Bbookimage, Btitlelist,Bbookauthor)
     #베스트 셀러는 북표지만 가져옴 (Bbooklist)
 
@@ -49,7 +49,17 @@ def index(request):
     Topic7title = list(Topic7['title'])
     Topic8title = list(Topic8['title'])
     Topic9title = list(Topic9['title'])
-    #print(Topic0title)
+
+    Topic0author = list(Topic0['author'])
+    Topic1author = list(Topic1['author'])
+    Topic2author = list(Topic2['author'])
+    Topic3author = list(Topic3['author'])
+    Topic4author = list(Topic4['author'])
+    Topic5author = list(Topic5['author'])
+    Topic6author = list(Topic6['author'])
+    Topic7author = list(Topic7['author'])
+    Topic8author = list(Topic8['author'])
+    Topic9author = list(Topic9['author'])
 
 
     Topic0image = list(Topic0['coversmallurl'])
@@ -62,17 +72,6 @@ def index(request):
     Topic7image = list(Topic7['coversmallurl'])
     Topic8image = list(Topic8['coversmallurl'])
     Topic9image = list(Topic9['coversmallurl'])
-
-    Topic0author = list(Topic0['author'])
-    Topic1author = list(Topic1['author'])
-    Topic2author = list(Topic2['author'])
-    Topic3author = list(Topic3['author'])
-    Topic4author = list(Topic4['author'])
-    Topic5author = list(Topic5['author'])
-    Topic6author = list(Topic6['author'])
-    Topic7author = list(Topic7['author'])
-    Topic8author = list(Topic8['author'])
-    Topic9author = list(Topic9['author'])
 
 
     Topic0write = Topic0['topic_keywords'].iloc[0]
@@ -123,11 +122,11 @@ def likes(request):
     bookprice = request.POST['bookprice']
 
     # 테이블에 넣기 : get_or_create -> 있으면 가져오고 없으면 생성해라
-    Likes.objects.get_or_create(userid=bookuserid,novel_title=booktitlelike,novel_image=booklikeimage,book_price=bookprice)
+    # Likes.objects.get_or_create(userid=bookuserid,novel_title=booktitlelike,novel_image=booklikeimage,book_price=bookprice)
 
-    if Likes.objects.get:
+    if Likes.objects.get(userid=bookuserid,novel_title=booktitlelike,novel_image=booklikeimage,book_price=bookprice):
         # ajax
-        messeage = '이 책 좋아요!'
+        messeage = '이 책 좋아요 !'
         result = {'result': messeage}
         result = (json.dumps(result, cls=NumpyEncoder, indent=4, ensure_ascii=False))
     else:
@@ -145,7 +144,7 @@ def unlikes(request):
     bookprice2 = request.POST['delbookprice']
     Likes.objects.filter(userid=bookuserid2,novel_title=booktitlelike2,novel_image=booklikeimage2,book_price=bookprice2).delete()
 
-    messeage2 = '이 책 이제 안좋아요...'
+    messeage2 = '좋아요가 취소되었습니다'
     result2 = {'result2': messeage2}
     result2 = (json.dumps(result2, cls=NumpyEncoder, indent=4, ensure_ascii=False))
     return JsonResponse(result2,safe=False)
